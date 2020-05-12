@@ -2,7 +2,7 @@
 # Created by https://www.gitignore.io/api/maven
 # Edit at https://www.gitignore.io/?templates=maven
 
-### Maven ###
+### Maven  ###
 target/
 pom.xml.tag
 pom.xml.releaseBackup

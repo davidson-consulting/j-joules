@@ -6,6 +6,7 @@
 	<groupId>jJoules</groupId>
   	<artifactId>J-Joules</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>11</maven.compiler.source>
