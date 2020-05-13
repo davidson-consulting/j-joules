@@ -9,48 +9,43 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 /**
  * @author sanoussy
  *
  */
-class RaplPackageDomainTest {
+class RaplDomainTest {
 	
 	private RaplPackageDomain raplPKG;
 	
 	@BeforeEach
 	public void initDomain() {
-		raplPKG = new RaplPackageDomain();
+		raplPKG = new RaplPackageDomain(0);
 	}
 
 	@Test
-	public void domainNameIsCorrect() throws FileNotFoundException,IOException{
+	public void domainPKGNameIsCorrect() throws FileNotFoundException,IOException{
 		// Arrange
-		String pathName = RaplPackageDomain.PATH_NAME + "/name";
+		String pathName = RaplPackageDomain.RAPL_PKG_PATH_NAME +this.raplPKG.getSocket()+ "/name";
 		
 		// Act
-		String packageName = raplPKG.openAndRead(pathName);
+		String packageName = raplPKG.openAndReadFile(pathName);
 		
 		// Assert
 		assertThat(packageName).isEqualTo(raplPKG.getDomainName());
 	}
 	
 	@Test
-	public void domainConsomedEnergyFileExist() {
-		String pathName = RaplPackageDomain.PATH_NAME + "/energy_uj";
+	public void domainPKGConsomedEnergyFileExist() {
+		String pathName = RaplPackageDomain.RAPL_PKG_PATH_NAME +this.raplPKG.getSocket()+ "/energy_uj";
 		File file = new File(pathName);
 		
 		assertThat(file.exists()).isTrue();
 	}
 	
-	@Test
-	public void domainMaxEnergyConsomedFileExist() {
-		String pathName = RaplPackageDomain.PATH_NAME + "/max_energy_range_uj";
-		File file = new File(pathName);
-		
-		assertThat(file.exists()).isTrue();
-	}
+	
+	
 
 }
