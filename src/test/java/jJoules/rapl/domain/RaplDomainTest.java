@@ -40,6 +40,7 @@ class RaplDomainTest {
 	@Test
 	public void domainPKGConsomedEnergyFileExist() {
 		String pathName = RaplPackageDomain.RAPL_PKG_PATH_NAME +this.raplPKG.getSocket()+ "/energy_uj";
+		
 		File file = new File(pathName);
 		
 		assertThat(file.exists()).isTrue();
