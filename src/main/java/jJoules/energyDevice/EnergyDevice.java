@@ -5,60 +5,68 @@ package jJoules.energyDevice;
 
 import java.util.ArrayList;
 
+import jJoules.energyDomain.EnergyDomain;
 import jJoules.energyDomain.rapl.RaplDomain;
+import jJoules.exceptions.DeviceNotConfiguredException;
 import jJoules.exceptions.NoSuchDomainException;
 import jJoules.exceptions.NoSuchEnergyDeviceException;
-import jJoules.exceptions.DeviceNotConfiguredException;
 
 /**
  * @author sanoussy
  *
  */
-public class EnergyDevice {
+public abstract class EnergyDevice {
 	
-	private ArrayList<RaplDomain> configuredDomains;
-	private ArrayList<RaplDomain> availableDomains;
+	private ArrayList<EnergyDomain> configuredDomains;
+	private ArrayList<EnergyDomain> availableDomains;
 
 	/**
+	 * @throws NoSuchEnergyDeviceException 
 	 * 
 	 */
-	public EnergyDevice() {
+	public EnergyDevice() throws NoSuchEnergyDeviceException {
+		this.configuredDomains = new ArrayList<EnergyDomain>();
+		this.availableDomains = this.availableDomains();
 	}
 	
 	/**
 	 * @param domains all domains to configure
 	 */
-	public void configure(ArrayList<RaplDomain> domains) throws NoSuchDomainException{
-		
-	};
+	public void configure(ArrayList<EnergyDomain> domains) throws NoSuchDomainException{
+		for(EnergyDomain domain : domains) {
+			if(! this.availableDomains.contains(domain))
+				throw new NoSuchDomainException();
+		}
+		this.configuredDomains = domains;
+	}
 	
 	/**
 	 * @return configured domain for device
 	 */
-	public ArrayList<RaplDomain> getConfiguredDomains() throws DeviceNotConfiguredException{
-		return null;
+	public ArrayList<EnergyDomain> getConfiguredDomains() throws DeviceNotConfiguredException{
+		if (this.configuredDomains.isEmpty())
+			throw new DeviceNotConfiguredException();
+		return this.configuredDomains;
 	}
 	
 	/**
 	 * @return available Domains
 	 */
-	public ArrayList<RaplDomain> getAvailableDomains(){
-		return null;
+	public ArrayList<EnergyDomain> getAvailableDomains(){
+		return this.availableDomains;
 	}
 	
 	/**
 	 * @return all available domain that could be monitored on the device
 	 */
-	public ArrayList<RaplDomain> availableDomains() throws NoSuchEnergyDeviceException {
-		return null;
-	}
+	public abstract ArrayList<EnergyDomain> availableDomains() throws NoSuchEnergyDeviceException;
 	
 	/**
 	 * @return the energy consumed by device
+	 * @throws DeviceNotConfiguredException 
 	 */
-	public long getEnergyConsumed() {
-		return 0;
-	}
+	public abstract ArrayList<Double> getEnergyConsumed() throws DeviceNotConfiguredException;
+	
 	
 	public static boolean isANumber(String s){
 		for(Character c : s.toCharArray()) {
