@@ -35,14 +35,14 @@ class RaplDomainTest {
 
 	@Test
 	public void domainNameIsCorrect() throws FileNotFoundException,IOException{
-		// Arrange
-		String pathName = raplDomain.domainPath() +this.raplDomain.getSocket()+ "/name";
 		
-		// Act
-		String packageName = raplDomain.openAndReadFile(pathName);
-		
-		// Assert
-		assertThat(packageName).isEqualTo(raplDomain.getDomainName()+"-"+raplDomain.getSocket());
+		if (! (raplDomain instanceof MockRaplDomain)) {
+			String pathName = raplDomain.domainPath() +this.raplDomain.getSocket()+ "/name";
+			
+			String packageName = RaplDomain.openAndReadFile(pathName);
+			
+			assertThat(packageName).isEqualTo(raplDomain.getDomainName()+"-"+raplDomain.getSocket());
+		}
 	}
 	
 	@Test
@@ -55,10 +55,10 @@ class RaplDomainTest {
 	@Test
 	public void domainConsumedEnergyFileContentIsNumeric() {
 		String pathName = raplDomain.domainPath() +this.raplDomain.getSocket()+ "/energy_uj";
-		String cunsumedEnergy = raplDomain.openAndReadFile(pathName);
-		
-		if (! (raplDomain instanceof MockRaplDomain))
+		if (! (raplDomain instanceof MockRaplDomain)) {
+			String cunsumedEnergy = RaplDomain.openAndReadFile(pathName);
 			assertThat(EnergyDevice.isANumber(cunsumedEnergy)).isTrue();
+		}
 	}
 	
 	
@@ -100,9 +100,6 @@ class RaplDomainTest {
 		}
 		public boolean domainPathExist(String pathName) {
 			return true;
-		}
-		public String openAndReadFile(String pathName) {
-			return this.getDomainName()+"-"+this.getSocket();
 		}
 		
 	}

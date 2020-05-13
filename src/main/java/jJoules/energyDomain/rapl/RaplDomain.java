@@ -39,7 +39,7 @@ public abstract class RaplDomain {
 		return  RaplDomain.RAPL_PATH_NAME;
 	}
 	
-	public String openAndReadFile(String pathName) {
+	public static String openAndReadFile(String pathName) {
 		
 		File file = new File(pathName);
 		FileReader fr;
