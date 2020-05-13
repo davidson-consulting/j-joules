@@ -45,7 +45,9 @@ public abstract class RaplDevice {
 	 * @param pathName path to check if it is existent path
 	 * @return true if rapl path exist and false otherwise
 	 */
-	public abstract boolean raplPathExist(String pathName);
+	public boolean raplPathExist(String pathName) {
+		return false;
+	}
 	
 	/**
 	 * @return give all available domain for device
