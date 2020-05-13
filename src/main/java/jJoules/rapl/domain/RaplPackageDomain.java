@@ -22,7 +22,7 @@ public class RaplPackageDomain extends RaplDomain {
 	 * @return domain name
 	 */
 	public String getDomainName() {
-		return "package-0";
+		return "package";
 	}
 
 }
