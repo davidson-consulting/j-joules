@@ -28,14 +28,6 @@ public class RaplDevice extends EnergyDevice{
 	}
 	
 	
-//	/**
-//	 * @param pathName path to check if it is existent path
-//	 * @return true if rapl path exist and false otherwise
-//	 */
-//	public static boolean raplPathExist(String pathName) {
-//		return false;
-//	}
-	
 	@Override
 	public ArrayList<EnergyDomain> availableDomains() throws NoSuchEnergyDeviceException {
 		if(! new File(RaplDomain.RAPL_PATH_NAME).exists()) 
