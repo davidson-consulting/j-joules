@@ -54,11 +54,7 @@ class RaplDomainTest {
 	
 	@Test
 	public void domainConsumedEnergyFileContentIsNumeric() {
-		String pathName = raplDomain.domainPath() +this.raplDomain.getSocket()+ "/energy_uj";
-		if (! (raplDomain instanceof MockRaplDomain)) {
-			String cunsumedEnergy = RaplDomain.openAndReadFile(pathName);
-			assertThat(EnergyDevice.isANumber(cunsumedEnergy)).isTrue();
-		}
+		assertThat(raplDomain.getEneregyConsumed()).isGreaterThanOrEqualTo(0);
 	}
 	
 	
