@@ -35,7 +35,7 @@ class RaplDeviceTest {
 
 		for(Double d : consumedEnergy) {
 			System.out.println(d);
-			assertThat(d).isGreaterThan(0);
+			assertThat(d).isGreaterThanOrEqualTo(0);
 		}
 	}
 }
