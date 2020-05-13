@@ -23,5 +23,15 @@ public class NoSuchDomainException extends JJoulesException {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public NoSuchDomainException(Throwable cause) {
+		super(cause);
+		// TODO Auto-generated constructor stub
+	}
+
+	public NoSuchDomainException(String message, Throwable cause) {
+		super(message, cause);
+		// TODO Auto-generated constructor stub
+	}
 
 }
