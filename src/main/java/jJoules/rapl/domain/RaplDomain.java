@@ -23,6 +23,7 @@ public abstract class RaplDomain {
 	 * 
 	 */
 	public RaplDomain(int socket) {
+		this.socket = socket;
 	}
 	
 	/**
@@ -31,7 +32,7 @@ public abstract class RaplDomain {
 	public abstract String getDomainName();
 	
 	public int getSocket() {
-		return 0;
+		return this.socket;
 	}
 	
 	public String openAndReadFile(String pathName) {
@@ -50,13 +51,20 @@ public abstract class RaplDomain {
 		return name;
 	}
 	
+	public boolean domainPathExist(String pathName) {
+		return new File(pathName).exists();
+	}
 	
 	public String toString() {
-		return "";
+		return "package_"+this.getSocket();
 	}
 	
 	public boolean equals(Object o) {
-		return false;
+		if (o == null) return false;
+		if (o instanceof RaplDomain) {
+			RaplDomain other = (RaplDomain) o;
+			return this.toString().equals(other.toString());
+		} return false;
 	}
 	
 	
