@@ -56,7 +56,7 @@ public abstract class RaplDomain {
 	}
 	
 	public String toString() {
-		return "package_"+this.getSocket();
+		return this.getDomainName()+"_"+this.getSocket();
 	}
 	
 	public boolean equals(Object o) {
