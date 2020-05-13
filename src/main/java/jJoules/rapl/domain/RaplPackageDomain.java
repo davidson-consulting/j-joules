@@ -24,5 +24,10 @@ public class RaplPackageDomain extends RaplDomain {
 	public String getDomainName() {
 		return "package";
 	}
+	
+	public String domainPath() {
+		return  RaplPackageDomain.RAPL_PKG_PATH_NAME;
+	}
+
 
 }

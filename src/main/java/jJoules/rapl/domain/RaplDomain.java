@@ -35,6 +35,10 @@ public abstract class RaplDomain {
 		return this.socket;
 	}
 	
+	public String domainPath() {
+		return  RaplDomain.RAPL_PATH_NAME;
+	}
+	
 	public String openAndReadFile(String pathName) {
 		
 		File file = new File(pathName);

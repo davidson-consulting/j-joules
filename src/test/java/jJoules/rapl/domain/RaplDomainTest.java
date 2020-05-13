@@ -29,14 +29,11 @@ class RaplDomainTest {
 	public void initDomain() {
 		raplDomain = this.createDomain(0);
 	}
-	public String domainPath() {
-		return  RaplDomain.RAPL_PATH_NAME;
-	}
 
 	@Test
 	public void domainPKGNameIsCorrect() throws FileNotFoundException,IOException{
 		// Arrange
-		String pathName = this.domainPath() +this.raplDomain.getSocket()+ "/name";
+		String pathName = raplDomain.domainPath() +this.raplDomain.getSocket()+ "/name";
 		
 		// Act
 		String packageName = raplDomain.openAndReadFile(pathName);
@@ -47,7 +44,7 @@ class RaplDomainTest {
 	
 	@Test
 	public void domainPKGConsomedEnergyFileExist() {
-		String pathName = this.domainPath() +this.raplDomain.getSocket()+ "/energy_uj";
+		String pathName = raplDomain.domainPath() +this.raplDomain.getSocket()+ "/energy_uj";
 		
 		assertThat(this.raplDomain.domainPathExist(pathName)).isTrue();
 	}
@@ -73,6 +70,11 @@ class RaplDomainTest {
 		
 	}
 	
+	/**
+	 * class for simulating the RaplDomain for the test
+	 * @author sanoussy
+	 *
+	 */
 	class MokeRaplDomain extends RaplDomain{
 
 		public MokeRaplDomain(int socket) {
