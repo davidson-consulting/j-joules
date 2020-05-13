@@ -6,7 +6,6 @@ package jJoules.energyDevice;
 import java.util.ArrayList;
 
 import jJoules.energyDomain.EnergyDomain;
-import jJoules.energyDomain.rapl.RaplDomain;
 import jJoules.exceptions.DeviceNotConfiguredException;
 import jJoules.exceptions.NoSuchDomainException;
 import jJoules.exceptions.NoSuchEnergyDeviceException;
