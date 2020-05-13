@@ -7,7 +7,7 @@ package jJoules.energyDomain;
  * @author sanoussy
  *
  */
-public class EnergyDomain {
+public abstract class EnergyDomain {
 
 	/**
 	 * 
@@ -15,5 +15,7 @@ public class EnergyDomain {
 	public EnergyDomain() {
 		
 	}
+	
+	public abstract double getEneregyConsumed();
 
 }

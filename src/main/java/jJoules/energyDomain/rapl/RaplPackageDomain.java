@@ -26,7 +26,14 @@ public class RaplPackageDomain extends RaplDomain {
 	}
 	
 	public String domainPath() {
-		return  RaplPackageDomain.RAPL_PKG_PATH_NAME;
+		return RaplPackageDomain.RAPL_PKG_PATH_NAME;
+	}
+
+	@Override
+	public double getEneregyConsumed() {
+		String pathName = RaplDomain.RAPL_PATH_NAME+"/intel-rapl:"+this.getSocket()+"/energy_uj";
+		String energyConsumed = RaplDomain.openAndReadFile(pathName);
+		return Double.parseDouble(energyConsumed);
 	}
 
 

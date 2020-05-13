@@ -9,11 +9,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import jJoules.energyDomain.EnergyDomain;
+
 /**
  * @author sanoussy
  *
  */
-public abstract class RaplDomain {
+public abstract class RaplDomain extends EnergyDomain {
 	
 	public static String RAPL_PATH_NAME = "/sys/devices/virtual/powercap/intel-rapl";
 	
@@ -70,6 +72,5 @@ public abstract class RaplDomain {
 			return this.toString().equals(other.toString());
 		} return false;
 	}
-	
 	
 }

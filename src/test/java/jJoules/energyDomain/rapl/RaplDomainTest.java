@@ -101,6 +101,11 @@ class RaplDomainTest {
 		public boolean domainPathExist(String pathName) {
 			return true;
 		}
+
+		@Override
+		public double getEneregyConsumed() {
+			return 0;
+		}
 		
 	}
 	
