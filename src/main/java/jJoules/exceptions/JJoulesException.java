@@ -23,4 +23,15 @@ public class JJoulesException extends Exception {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public JJoulesException(Throwable cause) {
+		super(cause);
+		// TODO Auto-generated constructor stub
+	}
+
+	public JJoulesException(String message, Throwable cause) {
+		super(message, cause);
+		// TODO Auto-generated constructor stub
+	}
+
 }
