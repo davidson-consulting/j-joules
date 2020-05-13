@@ -38,10 +38,9 @@ class RaplDomainTest {
 		
 		if (! (raplDomain instanceof MockRaplDomain)) {
 			String pathName = raplDomain.domainPath() +this.raplDomain.getSocket()+ "/name";
-			
-			String packageName = RaplDomain.openAndReadFile(pathName);
-			
-			assertThat(packageName).isEqualTo(raplDomain.getDomainName()+"-"+raplDomain.getSocket());
+			String domainName = RaplDomain.openAndReadFile(pathName);
+			assertThat(domainName).isIn(raplDomain.getDomainName(),raplDomain.getDomainName()+"-"+raplDomain.getSocket());
+			//assertThat(domainName).isEqualTo(raplDomain.getDomainName()+"-"+raplDomain.getSocket());
 		}
 	}
 	
