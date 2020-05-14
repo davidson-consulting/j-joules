@@ -115,9 +115,8 @@ public class RaplDevice extends EnergyDevice{
 				}
 			}
 		}return subDomainsList;
-		
-		
 	}
+	
 	@Override
 	public ArrayList<Double> getEnergyConsumed() throws DeviceNotConfiguredException {
 		ArrayList<Double> energyConsumed = new ArrayList<Double>();
