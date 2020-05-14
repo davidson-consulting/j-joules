@@ -5,6 +5,8 @@ package jJoules.energyDevice.rapl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import jJoules.energyDevice.EnergyDevice;
 import jJoules.energyDomain.EnergyDomain;
@@ -118,10 +120,10 @@ public class RaplDevice extends EnergyDevice{
 	}
 	
 	@Override
-	public ArrayList<Double> getEnergyConsumed() throws DeviceNotConfiguredException {
-		ArrayList<Double> energyConsumed = new ArrayList<Double>();
+	public Map<String,Double> getEnergyConsumed() throws DeviceNotConfiguredException {
+		Map<String,Double> energyConsumed = new HashMap<String,Double>();
 		for(EnergyDomain domain : this.getConfiguredDomains()) {
-			energyConsumed.add(domain.getEneregyConsumed());
+			energyConsumed.put(domain.getDomainName(),domain.getEneregyConsumed());
 		}
 		return energyConsumed;
 	}

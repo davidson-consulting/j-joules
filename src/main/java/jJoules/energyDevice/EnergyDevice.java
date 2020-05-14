@@ -4,6 +4,7 @@
 package jJoules.energyDevice;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import jJoules.energyDomain.EnergyDomain;
 import jJoules.exceptions.DeviceNotConfiguredException;
@@ -64,14 +65,6 @@ public abstract class EnergyDevice {
 	 * @return the energy consumed by device
 	 * @throws DeviceNotConfiguredException 
 	 */
-	public abstract ArrayList<Double> getEnergyConsumed() throws DeviceNotConfiguredException;
-	
-	
-	public static boolean isANumber(String s){
-		for(Character c : s.toCharArray()) {
-			if(!Character.isDigit(c))
-				return false;
-		}return true;
-	}
+	public abstract Map<String,Double> getEnergyConsumed() throws DeviceNotConfiguredException;
 
 }

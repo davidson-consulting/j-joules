@@ -32,11 +32,6 @@ public abstract class RaplDomain extends EnergyDomain {
 	public String getDeviceType() {
 		return RaplDevice.class.getName();
 	}
-	/**
-	 * @return domain name
-	 */
-	public abstract String getDomainName();
-	
 	public int getSocket() {
 		return this.socket;
 	}
