@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import jJoules.energyDevice.rapl.RaplDevice;
 import jJoules.energyDomain.EnergyDomain;
 
 /**
@@ -28,6 +29,9 @@ public abstract class RaplDomain extends EnergyDomain {
 		this.socket = socket;
 	}
 	
+	public String getDeviceType() {
+		return RaplDevice.class.getName();
+	}
 	/**
 	 * @return domain name
 	 */

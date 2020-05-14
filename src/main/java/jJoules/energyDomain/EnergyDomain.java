@@ -16,6 +16,7 @@ public abstract class EnergyDomain {
 		
 	}
 	
+	public abstract String getDeviceType();
 	public abstract double getEneregyConsumed();
 
 }
