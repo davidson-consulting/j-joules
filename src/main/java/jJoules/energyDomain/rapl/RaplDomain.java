@@ -48,6 +48,7 @@ public abstract class RaplDomain extends EnergyDomain {
 		try {
 			fr = new FileReader(file);
 			name = new BufferedReader(fr).readLine();
+			fr.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
