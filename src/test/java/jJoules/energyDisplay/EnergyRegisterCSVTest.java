@@ -32,9 +32,9 @@ class EnergyRegisterCSVTest {
 	@BeforeEach
 	public void init() {
 		this.registerCsv = new EnergyRegisterCSV("out.csv");
-		this.energyConsumedByDevice = registerCsv.getEnergyConsumedByDevice(this.mockDevice);
 		try {
 			 this.mockDevice = new MockEnergyDevice();
+			 this.energyConsumedByDevice = registerCsv.getEnergyConsumedByDevice(this.mockDevice);
 		} catch (NoSuchEnergyDeviceException e) {
 			e.printStackTrace();
 		}	
@@ -47,11 +47,9 @@ class EnergyRegisterCSVTest {
 		try {
 			FileReader fr = new FileReader(file);
 			BufferedReader br = new BufferedReader(fr);
-			assertThat("id;tag;energyConsumed").isEqualTo(br.readLine());
-			assertThat("1;package-0;1000.0").isEqualTo(br.readLine());
-			assertThat("1;core;100.0").isEqualTo(br.readLine());
-			assertThat("1;uncore;59.0").isEqualTo(br.readLine());
-			assertThat("1;dram;400.0").isEqualTo(br.readLine());
+			for(int i=0; i<energyConsumedByDevice.size();i++) {
+				assertThat(br.readLine()).isIn("id;tag;energyConsumed","1;package-0;1000.0","2;core;100.0","3;dram;400.0","4;uncore;59.0");
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
