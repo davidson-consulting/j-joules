@@ -50,13 +50,8 @@ public class EnergyDeviceFactory {
 			e.printStackTrace();
 		}
 		for(EnergyDevice device : availableDevices) {
-			try {
-				availableDomains.addAll(device.availableDomains());
-			} catch (NoSuchEnergyDeviceException e) {
-				e.printStackTrace();
-			}
+			availableDomains.addAll(device.getAvailableDomains());
 		}
-	
 		return getAllDomainsWithTypes(availableDomains);
 	}
 	
@@ -69,7 +64,7 @@ public class EnergyDeviceFactory {
 			else {
 				ArrayList<EnergyDomain> newDomains = new ArrayList<EnergyDomain> ();
 				newDomains.add(domain);
-				allDomains.put(deviceName,domains);
+				allDomains.put(deviceName,newDomains);
 			}
 			
 		}

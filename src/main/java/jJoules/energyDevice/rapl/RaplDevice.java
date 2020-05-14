@@ -8,8 +8,11 @@ import java.util.ArrayList;
 
 import jJoules.energyDevice.EnergyDevice;
 import jJoules.energyDomain.EnergyDomain;
+import jJoules.energyDomain.rapl.RaplCoreDomain;
 import jJoules.energyDomain.rapl.RaplDomain;
+import jJoules.energyDomain.rapl.RaplDramDomain;
 import jJoules.energyDomain.rapl.RaplPackageDomain;
+import jJoules.energyDomain.rapl.RaplUncoreDomain;
 import jJoules.exceptions.DeviceNotConfiguredException;
 import jJoules.exceptions.NoSuchEnergyDeviceException;
 
@@ -35,19 +38,23 @@ public class RaplDevice extends EnergyDevice{
 		ArrayList<EnergyDomain> availDomains = new ArrayList<EnergyDomain>();
 		
 		availDomains.addAll(availablePKGDomains());
+		availDomains.addAll(availableCoreDomains());
+		availDomains.addAll(availableUncoreDomains());
+		availDomains.addAll(availableDramDomains());
 		return availDomains;
 	}
 	
 	public static ArrayList<EnergyDomain> availablePKGDomains() {
-		ArrayList<EnergyDomain> pkgDomain = new ArrayList<EnergyDomain>();
-		for(int id=0; id < getSocketIds();id++ ) {
+		ArrayList<EnergyDomain> pkgDomains = new ArrayList<EnergyDomain>();
+		int ids = getSocketIds();
+		for(int id=0; id < ids ;id++ ) {
 			String domainNameFilePath = RaplDomain.RAPL_PATH_NAME+ "/intel-rapl:" + id+"/name";
 			if (new File(domainNameFilePath).exists()) {
 				String domainName = RaplDomain.openAndReadFile(domainNameFilePath);
-				if(domainName.equalsIgnoreCase("package-"+id))
-					pkgDomain.add(new RaplPackageDomain(id));
+				if(domainName.equals("package-"+id))
+					pkgDomains.add(new RaplPackageDomain(id));
 			}
-		}return pkgDomain;
+		}return pkgDomains;
 	}
 	
     private static int getSocketIds() {
@@ -59,29 +66,58 @@ public class RaplDevice extends EnergyDevice{
 			else return socketId;
 		}
 	}
+    public static ArrayList<EnergyDomain> availableCoreDomains() {
+    	ArrayList<EnergyDomain> coreDomains = new ArrayList<EnergyDomain>();
+    	int ids = getSocketIds();
+    	for(int id=0; id <ids; id++) {
+    		String domainNameFilePath = RaplDomain.RAPL_PATH_NAME+ "/intel-rapl:" + id+"/name";
+    		if (new File(domainNameFilePath).exists()) {
+    			coreDomains.add(new RaplCoreDomain(id));
+    		}
+    	}return coreDomains;
+	}
 
-
-//	private static ArrayList<EnergyDomain> availableCoreDomains() {
-//		return null;
-//	}
-//	private static ArrayList<EnergyDomain> availableUncoreDomains() {
-//		return null;
-//	}
-//	private static ArrayList<EnergyDomain> availableDramDomains() {
-//		return null;
-//	}
-
-
-//	public int[] getDomainOnSocket(int domainSocket,String domainName){
-//		int domainId = 0;
-//		while (true) {
-//			String domainPath = RaplDomain.RAPL_PATH_NAME + "/intel-rapl:"+domainId+"/name";
-//			if (RaplDomain.openAndReadFile(domainPath).equals(domainName)) {
-//				
-//			}
-//		}
-//}
+	public static ArrayList<EnergyDomain> availableUncoreDomains() {
+		ArrayList<EnergyDomain> uncoreDomains = new ArrayList<EnergyDomain>();
+		ArrayList<Integer> subDomainsList = getSubDomainsIds("uncore");
+		for(Integer i : subDomainsList) {
+			uncoreDomains.add(new RaplUncoreDomain(i));
+		}return uncoreDomains;
+	}
 	
+	private static ArrayList<EnergyDomain> availableDramDomains() {
+		ArrayList<EnergyDomain> dramDomains = new ArrayList<EnergyDomain>();
+		ArrayList<Integer> subDomainsList = getSubDomainsIds("dram");
+		for(Integer i : subDomainsList) {
+			dramDomains.add(new RaplDramDomain(i));
+		}return dramDomains;
+	}
+	
+	private static ArrayList<Integer> getSubDomainsIds(String domainName) {
+		ArrayList<Integer> subDomainsList = new ArrayList<Integer>();
+		int ids = getSocketIds();
+		for(int id=0; id<ids;id++) {
+			String domainFilePath = RaplDomain.RAPL_PATH_NAME+ "/intel-rapl:" + id;
+			boolean isNewPackage = true;
+			int subDomainsIds = 1;
+			while(isNewPackage) {
+				if(new File(domainFilePath+"/intel-rapl:"+id+":"+subDomainsIds).exists()) {
+					String name = RaplDomain.openAndReadFile(domainFilePath+"/intel-rapl:"+id+":"+subDomainsIds+"/name");
+					if(name == domainName)
+						subDomainsIds += 1;
+					else {
+						isNewPackage = false;
+						subDomainsList.add(subDomainsIds);
+					}
+				}else {
+					isNewPackage = false;
+					subDomainsList.add(subDomainsIds);
+				}
+			}
+		}return subDomainsList;
+		
+		
+	}
 	@Override
 	public ArrayList<Double> getEnergyConsumed() throws DeviceNotConfiguredException {
 		ArrayList<Double> energyConsumed = new ArrayList<Double>();
@@ -90,6 +126,5 @@ public class RaplDevice extends EnergyDevice{
 		}
 		return energyConsumed;
 	}
-	
 
 }
