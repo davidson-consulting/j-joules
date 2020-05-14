@@ -57,7 +57,7 @@ public abstract class RaplDomain extends EnergyDomain {
 		return name;
 	}
 	
-	public boolean domainPathExist(String pathName) {
+	public static boolean domainPathExist(String pathName) {
 		return new File(pathName).exists();
 	}
 	
