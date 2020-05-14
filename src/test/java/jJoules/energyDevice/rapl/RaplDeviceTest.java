@@ -7,6 +7,7 @@ package jJoules.energyDevice.rapl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,10 +32,9 @@ class RaplDeviceTest {
 	@Test
 	public void getConsumedEnergy() throws DeviceNotConfiguredException, NoSuchDomainException {
 		raplDevice.configure(raplDevice.getAvailableDomains());
-		ArrayList<Double> consumedEnergy = raplDevice.getEnergyConsumed();
+		Collection<Double> consumedEnergy = raplDevice.getEnergyConsumed().values();
 
 		for(Double d : consumedEnergy) {
-			System.out.println(d);
 			assertThat(d).isGreaterThanOrEqualTo(0);
 		}
 	}
