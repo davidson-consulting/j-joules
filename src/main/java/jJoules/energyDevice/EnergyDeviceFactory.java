@@ -11,6 +11,10 @@ import jJoules.exceptions.NoSuchEnergyDeviceException;
 public class EnergyDeviceFactory {
 
 	
+	/**
+	 * @param domains the list of some domains to generate their device
+	 * @return the list of all device
+	 */
 	public ArrayList<EnergyDevice> genDevices(ArrayList<EnergyDomain> domains) {
 		ArrayList<EnergyDevice> allDevices = new ArrayList<EnergyDevice>();
 		Map<String, ArrayList<EnergyDomain>> allDomains;
@@ -41,6 +45,9 @@ public class EnergyDeviceFactory {
 		
 	}
 	
+	/**
+	 * @return give all available domains
+	 */
 	private Map<String, ArrayList<EnergyDomain>> genAllAvailbaleDomains(){
 		ArrayList<EnergyDomain> availableDomains = new ArrayList<EnergyDomain>();
 		ArrayList<EnergyDevice> availableDevices = new ArrayList<EnergyDevice>();
@@ -55,6 +62,10 @@ public class EnergyDeviceFactory {
 		return getAllDomainsWithTypes(availableDomains);
 	}
 	
+	/**
+	 * @param domains list of domain to group
+	 * @return give a grouped domains on their devices
+	 */
 	private Map<String, ArrayList<EnergyDomain>> getAllDomainsWithTypes(ArrayList<EnergyDomain> domains){
 		Map<String,ArrayList<EnergyDomain>> allDomains = new HashMap<String,ArrayList<EnergyDomain>>();
 		for(EnergyDomain domain : domains) {
@@ -70,11 +81,11 @@ public class EnergyDeviceFactory {
 		}
 		return allDomains;
 	}
-	public static void main(String[] args) {
-		EnergyDeviceFactory devicesFactory = new EnergyDeviceFactory();
-		ArrayList<EnergyDevice> devices = devicesFactory.genDevices(null);
-		for(EnergyDevice d : devices) {
-			System.out.println(d.getClass().getName());
-		}
-	}
+//	public static void main(String[] args) {
+//		EnergyDeviceFactory devicesFactory = new EnergyDeviceFactory();
+//		ArrayList<EnergyDevice> devices = devicesFactory.genDevices(null);
+//		for(EnergyDevice d : devices) {
+//			System.out.println(d.getClass().getName());
+//		}
+//	}
 }

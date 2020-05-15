@@ -5,7 +5,6 @@ package jJoules.energyDisplay;
 
 import java.util.Map;
 
-import jJoules.energyDevice.EnergyDevice;
 
 /**
  * @author sanoussy
