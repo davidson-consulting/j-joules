@@ -29,17 +29,29 @@ public abstract class RaplDomain extends EnergyDomain {
 		this.socket = socket;
 	}
 	
+	@Override
 	public String getDeviceType() {
 		return RaplDevice.class.getName();
 	}
+	
+	/**
+	 * @return the domain socket
+	 */
 	public int getSocket() {
 		return this.socket;
 	}
 	
+	/**
+	 * @return domain path name
+	 */
 	public String domainPath() {
 		return  RaplDomain.RAPL_PATH_NAME;
 	}
 	
+	/**
+	 * @param pathName path to open and read content
+	 * @return content of the file 
+	 */
 	public static String openAndReadFile(String pathName) {
 		
 		File file = new File(pathName);
@@ -57,14 +69,24 @@ public abstract class RaplDomain extends EnergyDomain {
 		return name;
 	}
 	
+	/**
+	 * @param pathName path to check existence
+	 * @return true if pathName exist and false otherwise
+	 */
 	public static boolean domainPathExist(String pathName) {
 		return new File(pathName).exists();
 	}
 	
+	/**
+	 * @return a representation of each domain like `package-0`
+	 */
 	public String toString() {
 		return this.getDomainName()+"_"+this.getSocket();
 	}
 	
+	/**
+	 * @return true if other object is equals to the domain and false otherwise
+	 */
 	public boolean equals(Object o) {
 		if (o == null) return false;
 		if (o instanceof RaplDomain) {

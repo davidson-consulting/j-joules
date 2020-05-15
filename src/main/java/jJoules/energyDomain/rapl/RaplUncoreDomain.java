@@ -1,11 +1,13 @@
 package jJoules.energyDomain.rapl;
 
-public class RaplUncoreDomain extends RaplDomain {
-	
-	public static String RAPL_UNCORE_PATH_NAME = RaplPackageDomain.RAPL_PKG_PATH_NAME + "0/intel-rapl:0:";
-
-	public RaplUncoreDomain(int socket) {
-		super(socket);
+public class RaplUncoreDomain extends RaplSubDomain {
+		
+	/**
+	 * @param socket
+	 * @param subSocket
+	 */
+	public RaplUncoreDomain(int socket,int subSocket) {
+		super(socket,subSocket);
 	}
 
 	@Override
@@ -15,13 +17,8 @@ public class RaplUncoreDomain extends RaplDomain {
 
 	@Override
 	public double getEneregyConsumed() {
-		String pathName = RaplUncoreDomain.RAPL_UNCORE_PATH_NAME+this.getSocket()+"/energy_uj";
+		String pathName = this.domainPath()+"/energy_uj";
 		String energyConsumed = RaplDomain.openAndReadFile(pathName);
 		return Double.parseDouble(energyConsumed);
 	}
-	
-	public String domainPath() {
-		return RaplUncoreDomain.RAPL_UNCORE_PATH_NAME;
-	}
-
 }

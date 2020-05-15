@@ -16,7 +16,14 @@ public abstract class EnergyDomain {
 		
 	}
 	
+	/**
+	 * @return a device type name
+	 */
 	public abstract String getDeviceType();
+	
+	/**
+	 * @return energy consumed by domain 
+	 */
 	public abstract double getEneregyConsumed();
 	/**
 	 * @return domain name
