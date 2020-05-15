@@ -20,31 +20,31 @@ public class RaplDomainTest {
 	@Test
 	public void domainPkgNameIsCorrect() throws FileNotFoundException,IOException{
 			RaplPackageDomain pkg = new RaplPackageDomain(0);
-			String pathName = pkg.domainPath() +pkg.getSocket()+ "/name";
+			String pathName = pkg.domainPath()+ "/name";
 			String domainName = RaplDomain.openAndReadFile(pathName);
 			assertThat(domainName).isEqualTo(pkg.getDomainName()+"-"+pkg.getSocket());
 	}
 	
 	@Test
 	public void domainCoreNameIsCorrect() throws FileNotFoundException,IOException{
-			RaplCoreDomain core = new RaplCoreDomain(0);
-			String pathName = core.domainPath() +core.getSocket()+ "/name";
+			RaplCoreDomain core = new RaplCoreDomain(0,0);
+			String pathName = core.domainPath() + "/name";
 			String domainName = RaplDomain.openAndReadFile(pathName);
 			assertThat(domainName).isEqualTo(core.getDomainName());
 	}
 	
 	@Test
 	public void domainUncoreNameIsCorrect() throws FileNotFoundException,IOException{
-			RaplCoreDomain uncore = new RaplCoreDomain(0);
-			String pathName = uncore.domainPath() +uncore.getSocket()+ "/name";
+			RaplUncoreDomain uncore = new RaplUncoreDomain(0,1);
+			String pathName = uncore.domainPath()+ "/name";
 			String domainName = RaplDomain.openAndReadFile(pathName);
 			assertThat(domainName).isEqualTo(uncore.getDomainName());
 	}
 	
 	@Test
 	public void domainDramNameIsCorrect() throws FileNotFoundException,IOException{
-			RaplCoreDomain dram = new RaplCoreDomain(0);
-			String pathName = dram.domainPath() +dram.getSocket()+ "/name";
+			RaplDramDomain dram = new RaplDramDomain(0,2);
+			String pathName = dram.domainPath() + "/name";
 			String domainName = RaplDomain.openAndReadFile(pathName);
 			assertThat(domainName).isEqualTo(dram.getDomainName());
 	}
@@ -64,15 +64,15 @@ public class RaplDomainTest {
 	
 	@Test
 	public void coreDomainConsumedEnergyFileContentIsNumeric() {
-		assertThat(new RaplCoreDomain(0).getEneregyConsumed()).isGreaterThanOrEqualTo(0);
+		assertThat(new RaplCoreDomain(0,0).getEneregyConsumed()).isGreaterThanOrEqualTo(0);
 	}
 	@Test
 	public void uncoreDomainConsumedEnergyFileContentIsNumeric() {
-		assertThat(new RaplUncoreDomain(1).getEneregyConsumed()).isGreaterThanOrEqualTo(0);
+		assertThat(new RaplUncoreDomain(0,1).getEneregyConsumed()).isGreaterThanOrEqualTo(0);
 	}
 	@Test
 	public void dramDomainConsumedEnergyFileContentIsNumeric() {
-		assertThat(new RaplDramDomain(2).getEneregyConsumed()).isGreaterThanOrEqualTo(0);
+		assertThat(new RaplDramDomain(0,2).getEneregyConsumed()).isGreaterThanOrEqualTo(0);
 	}
 	
 //	@ParameterizedTest(name = "for id-{0} => domainName_{0}")
