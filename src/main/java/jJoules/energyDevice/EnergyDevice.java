@@ -12,6 +12,7 @@ import jJoules.exceptions.NoSuchDomainException;
 import jJoules.exceptions.NoSuchEnergyDeviceException;
 
 /**
+ * Class to get energy consumption information for specified device
  * @author sanoussy
  *
  */
@@ -30,7 +31,9 @@ public abstract class EnergyDevice {
 	}
 	
 	/**
+	 * Give all domains those could be monitored on the device 
 	 * @param domains all domains to configure
+	 * @throws NoSuchDomainException 
 	 */
 	public void configure(ArrayList<EnergyDomain> domains) throws NoSuchDomainException{
 		for(EnergyDomain domain : domains) {
@@ -42,6 +45,7 @@ public abstract class EnergyDevice {
 	
 	/**
 	 * @return configured domain for device
+	 * @throws DeviceNotConfiguredException
 	 */
 	public ArrayList<EnergyDomain> getConfiguredDomains() throws DeviceNotConfiguredException{
 		if (this.configuredDomains.isEmpty())
