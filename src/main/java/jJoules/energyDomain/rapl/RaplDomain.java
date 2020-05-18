@@ -76,23 +76,10 @@ public abstract class RaplDomain extends EnergyDomain {
 	public static boolean domainPathExist(String pathName) {
 		return new File(pathName).exists();
 	}
-	
 	/**
 	 * @return a representation of each domain like `package-0`
 	 */
 	public String toString() {
 		return this.getDomainName()+"_"+this.getSocket();
 	}
-	
-	/**
-	 * @return true if other object is equals to the domain and false otherwise
-	 */
-	public boolean equals(Object o) {
-		if (o == null) return false;
-		if (o instanceof RaplDomain) {
-			RaplDomain other = (RaplDomain) o;
-			return this.toString().equals(other.toString());
-		} return false;
-	}
-	
 }

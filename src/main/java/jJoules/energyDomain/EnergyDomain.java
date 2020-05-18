@@ -3,6 +3,8 @@
  */
 package jJoules.energyDomain;
 
+import jJoules.energyDomain.rapl.RaplDomain;
+
 /**
  * @author sanoussy
  *
@@ -29,5 +31,16 @@ public abstract class EnergyDomain {
 	 * @return domain name
 	 */
 	public abstract String getDomainName();
+	
+	/**
+	 * @return true if other object is equals to the domain and false otherwise
+	 */
+	public boolean equals(Object o) {
+		if (o == null) return false;
+		if (o instanceof RaplDomain) {
+			RaplDomain other = (RaplDomain) o;
+			return this.toString().equals(other.toString());
+		} return false;
+	}
 
 }

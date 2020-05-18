@@ -32,4 +32,11 @@ public abstract class RaplSubDomain extends RaplDomain {
 				this.getSocket()+":"+this.getSubSocket();
 	}
 	
+	/**
+	 * @return a representation of each domain like `package-0`
+	 */
+	public String toString() {
+		return this.getDomainName()+"_"+this.getSubSocket();
+	}
+	
 }
