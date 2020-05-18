@@ -84,13 +84,10 @@ public class RaplDevice extends EnergyDevice{
      */
     public static ArrayList<EnergyDomain> availableCoreDomains() {
     	ArrayList<EnergyDomain> coreDomains = new ArrayList<EnergyDomain>();
-    	int ids = getSocketIds();
-    	for(int id=0; id <ids; id++) {
-    		String domainNameFilePath = RaplDomain.RAPL_PATH_NAME+ "/intel-rapl:" + id+"/name";
-    		if (new File(domainNameFilePath).exists()) {
-    			coreDomains.add(new RaplCoreDomain(id,0));
-    		}
-    	}return coreDomains;
+    	Map<Integer,Integer> subDomains = getDomainsIds("core");
+		for(Integer i : subDomains.keySet()) {
+			coreDomains.add(new RaplCoreDomain(i,subDomains.get(i)));
+		}return coreDomains;
 	}
 
 	/**
@@ -98,9 +95,9 @@ public class RaplDevice extends EnergyDevice{
 	 */
 	public static ArrayList<EnergyDomain> availableUncoreDomains() {
 		ArrayList<EnergyDomain> uncoreDomains = new ArrayList<EnergyDomain>();
-		ArrayList<Integer> subDomainsList = getPkgIds("uncore",1);
-		for(Integer i : subDomainsList) {
-			uncoreDomains.add(new RaplUncoreDomain(i,1));
+		Map<Integer,Integer> subDomains = getDomainsIds("uncore");
+		for(Integer i : subDomains.keySet()) {
+			uncoreDomains.add(new RaplUncoreDomain(i,subDomains.get(i)));
 		}return uncoreDomains;
 	}
 	
@@ -109,9 +106,9 @@ public class RaplDevice extends EnergyDevice{
 	 */
 	private static ArrayList<EnergyDomain> availableDramDomains() {
 		ArrayList<EnergyDomain> dramDomains = new ArrayList<EnergyDomain>();
-		ArrayList<Integer> subDomainsList = getPkgIds("dram",2);
-		for(Integer i : subDomainsList) {
-			dramDomains.add(new RaplDramDomain(i,2));
+		Map<Integer,Integer> subDomains = getDomainsIds("dram");
+		for(Integer i : subDomains.keySet()) {
+			dramDomains.add(new RaplDramDomain(i,subDomains.get(i)));
 		}return dramDomains;
 	}
 	
@@ -120,15 +117,28 @@ public class RaplDevice extends EnergyDevice{
 	 * @param subDomainId the subDomain id {core, uncore or dram}
 	 * @return list of integer those represent a socket of device
 	 */
-	private static ArrayList<Integer> getPkgIds(String domainName,int subDomainId) {
-		ArrayList<Integer> pkgIdList = new ArrayList<Integer>();
+	private static Map<Integer,Integer> getDomainsIds(String domainName) {
+		Map<Integer,Integer> domainsIds = new HashMap<Integer,Integer>();
 		int ids = getSocketIds();
 		for(int id=0; id<ids;id++) {
 			String domainFilePath = RaplDomain.RAPL_PATH_NAME+ "/intel-rapl:" + id;
-			if(new File(domainFilePath+"/intel-rapl:"+id+":"+subDomainId).exists()) {
-				pkgIdList.add(id);
-			}	
-		}return pkgIdList;
+			if (new File(domainFilePath).exists()) {
+				boolean isSubDomain = false;
+				int subId = 0;
+				while(! isSubDomain) {
+					String subDomainFilePath = domainFilePath+"/intel-rapl:"+id+":"+subId+"/name";
+					if(new File(subDomainFilePath).exists()) {
+						String name = RaplDomain.openAndReadFile(subDomainFilePath);
+						if (name.equals(domainName)) {
+							domainsIds.put(id, subId);
+							isSubDomain = true;
+						}	
+						else
+							subId++;
+					}
+				}
+			}
+		}return domainsIds;
 	}
 	
 	@Override
