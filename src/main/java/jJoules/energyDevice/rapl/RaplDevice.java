@@ -86,7 +86,7 @@ public class RaplDevice extends EnergyDevice{
     	ArrayList<EnergyDomain> coreDomains = new ArrayList<EnergyDomain>();
     	Map<Integer,Integer> subDomains = getDomainsIds("core");
 		for(Integer i : subDomains.keySet()) {
-			coreDomains.add(new RaplCoreDomain(i,subDomains.get(i)));
+			coreDomains.add(new RaplCoreDomain(subDomains.get(i),i));
 		}return coreDomains;
 	}
 
@@ -97,7 +97,7 @@ public class RaplDevice extends EnergyDevice{
 		ArrayList<EnergyDomain> uncoreDomains = new ArrayList<EnergyDomain>();
 		Map<Integer,Integer> subDomains = getDomainsIds("uncore");
 		for(Integer i : subDomains.keySet()) {
-			uncoreDomains.add(new RaplUncoreDomain(i,subDomains.get(i)));
+			uncoreDomains.add(new RaplUncoreDomain(subDomains.get(i),i));
 		}return uncoreDomains;
 	}
 	
@@ -108,7 +108,7 @@ public class RaplDevice extends EnergyDevice{
 		ArrayList<EnergyDomain> dramDomains = new ArrayList<EnergyDomain>();
 		Map<Integer,Integer> subDomains = getDomainsIds("dram");
 		for(Integer i : subDomains.keySet()) {
-			dramDomains.add(new RaplDramDomain(i,subDomains.get(i)));
+			dramDomains.add(new RaplDramDomain(subDomains.get(i),i));
 		}return dramDomains;
 	}
 	

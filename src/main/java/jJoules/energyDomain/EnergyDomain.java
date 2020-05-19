@@ -43,4 +43,6 @@ public abstract class EnergyDomain {
 		} return false;
 	}
 
+	public abstract String domainPath();
+
 }
