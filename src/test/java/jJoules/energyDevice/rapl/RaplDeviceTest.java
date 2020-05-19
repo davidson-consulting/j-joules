@@ -30,7 +30,6 @@ class RaplDeviceTest {
 	
 	@Test
 	public void getConsumedEnergy() throws DeviceNotConfiguredException, NoSuchDomainException {
-		System.out.println(raplDevice.getAvailableDomains());
 		raplDevice.configure(raplDevice.getAvailableDomains());
 		
 		Collection<Double> consumedEnergy = raplDevice.getEnergyConsumed().values();
