@@ -33,21 +33,21 @@ public class RaplDomainTest {
 			assertThat(domainName).isEqualTo(core.getDomainName());
 	}
 	
-//	@Test
-//	public void domainUncoreNameIsCorrect() throws FileNotFoundException,IOException{
-//			RaplUncoreDomain uncore = new RaplUncoreDomain(0,1);
-//			String pathName = uncore.domainPath()+ "/name";
-//			String domainName = RaplDomain.openAndReadFile(pathName);
-//			assertThat(domainName).isEqualTo(uncore.getDomainName());
-//	}
-//	
-//	@Test
-//	public void domainDramNameIsCorrect() throws FileNotFoundException,IOException{
-//			RaplDramDomain dram = new RaplDramDomain(0,2);
-//			String pathName = dram.domainPath() + "/name";
-//			String domainName = RaplDomain.openAndReadFile(pathName);
-//			assertThat(domainName).isEqualTo(dram.getDomainName());
-//	}
+	@Test
+	public void domainUncoreNameIsCorrect() throws FileNotFoundException,IOException{
+			RaplUncoreDomain uncore = new RaplUncoreDomain(0,1);
+			String pathName = uncore.domainPath()+ "/name";
+			String domainName = RaplDomain.openAndReadFile(pathName);
+			assertThat(domainName).isIn("",uncore.getDomainName());
+	}
+	
+	@Test
+	public void domainDramNameIsCorrect() throws FileNotFoundException,IOException{
+			RaplDramDomain dram = new RaplDramDomain(0,2);
+			String pathName = dram.domainPath() + "/name";
+			String domainName = RaplDomain.openAndReadFile(pathName);
+			assertThat(domainName).isIn("",dram.getDomainName());
+	}
 	
 //	@ParameterizedTest(name = "{2} energy consumed file exist")
 //	@CsvSource({"0,/intel-rapl:,package","0,/intel-rapl:0/intel-rapl:0:,core","1,/intel-rapl:0/intel-rapl:0:,uncore","2,/intel-rapl:0/intel-rapl:0:,dram"})
