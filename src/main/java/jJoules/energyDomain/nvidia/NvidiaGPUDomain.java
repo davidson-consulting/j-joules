@@ -43,4 +43,9 @@ public class NvidiaGPUDomain extends EnergyDomain {
 		return this.getDomainName()+"_"+this.getNvidiaId();
 	}
 
+	@Override
+	public String domainPath() {
+		return null;
+	}
+
 }
