@@ -133,8 +133,12 @@ public class RaplDevice extends EnergyDevice{
 							domainsIds.put(id, subId);
 							isSubDomain = true;
 						}	
-						else
+						else {
 							subId++;
+						}
+							
+					}else {
+						isSubDomain = true;
 					}
 				}
 			}
