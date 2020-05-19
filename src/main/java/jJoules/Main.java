@@ -6,23 +6,7 @@ import jJoules.energyDomain.rapl.RaplPackageDomain;
 
 public class Main {
 
-	public Main() {
-		
-	}
-
 	public static void main(String[] args) {
-		RaplPackageDomain pkg = new RaplPackageDomain(0);
-		EnergyMesureIt mesureIt = new EnergyMesureIt(pkg);
-		
-		mesureIt.begin();
-		System.out.println("before => "+mesureIt.getEnergyBefore());
-		
-		for(int i=0;i<10000; i++) {}
-		
-		double diff = mesureIt.end();
-		System.out.println("after => "+ mesureIt.getEnergyAfter());
-		System.out.println("diff => "+diff);
-		
 		try {
 			EnergyDevice device = new RaplDevice();
 			device.configure(device.getAvailableDomains());
@@ -31,6 +15,19 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		RaplPackageDomain pkg = new RaplPackageDomain(0);
+		EnergyMesureIt mesureIt = new EnergyMesureIt(pkg);
+		
+		System.out.println("\n---- Energy consumed in "+pkg+" ----");
+		mesureIt.begin();
+		System.out.println("Energy consumed before => "+mesureIt.getEnergyBefore());
+		
+		for(int i=0;i<10000; i++) {}
+		
+		double diff = mesureIt.end();
+		System.out.println("Energy consumed after => "+ mesureIt.getEnergyAfter());
+		System.out.println("diff => "+diff);
+		
 	}
 
 }
