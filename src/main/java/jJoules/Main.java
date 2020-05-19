@@ -25,7 +25,7 @@ public class Main {
 		
 		try {
 			EnergyDevice device = new RaplDevice();
-			device.configure(null);
+			device.configure(device.getAvailableDomains());
 			System.out.println(device.getAvailableDomains());
 		} catch (Exception e) {
 			e.printStackTrace();

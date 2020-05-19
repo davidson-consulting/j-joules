@@ -59,11 +59,61 @@
 			  <configuration>
 			     <archive>
 				<manifest>
-					<mainClass>jJoules.EnergyMesureIt</mainClass>
+					<mainClass>jJoules.Main</mainClass>
 				</manifest>
 			     </archive>
 			  </configuration>
         	</plugin>
+        	
+        	
+        	<!--  essaie de docker -->
+           <!--   <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy
+                                    file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                    tofile="${project.build.directory}/J-Joules-0.0.1-SNAPSHOT.jar" />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <imageTag>${project.version}</imageTag>
+                    <imageTag>latest</imageTag>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <directory>${project.build.directory}</directory>
+                            <include>J-Joules-0.0.1-SNAPSHOT.jar</include>
+                            <targetPath>/</targetPath>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>-->
+        	
+        	
 		</plugins>
 	</build>
 </project>
