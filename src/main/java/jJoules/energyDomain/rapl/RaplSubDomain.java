@@ -31,12 +31,4 @@ public abstract class RaplSubDomain extends RaplDomain {
 		return RaplPackageDomain.RAPL_PKG_PATH_NAME+this.getParentSocket()+"/intel-rapl:"+
 				this.getParentSocket()+":"+this.getSocket();
 	}
-	
-	/**
-	 * @return a representation of each domain like `package-0`
-	 */
-	public String toString() {
-		return this.getDomainName()+"_"+this.getSocket();
-	}
-	
 }

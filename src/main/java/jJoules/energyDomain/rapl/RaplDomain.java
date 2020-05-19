@@ -41,9 +41,7 @@ public abstract class RaplDomain extends EnergyDomain {
 		return this.socket;
 	}
 	
-	/**
-	 * @return domain path name
-	 */
+	@Override
 	public String domainPath() {
 		return  RaplDomain.RAPL_PATH_NAME;
 	}
