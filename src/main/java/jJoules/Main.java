@@ -26,7 +26,8 @@ public class Main {
 		try {
 			EnergyDevice device = new RaplDevice();
 			device.configure(device.getAvailableDomains());
-			System.out.println(device.getAvailableDomains());
+			System.out.println("All available domains => "+device.getAvailableDomains());
+			System.out.println("All configured domains => "+device.getConfiguredDomains());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
