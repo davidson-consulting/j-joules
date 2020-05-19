@@ -50,19 +50,5 @@ public class EnergyMesureIt {
 		//System.out.println("diff => "+ (end - this.getEnergyBefore()));
 		return this.energyAfter - this.enegyBefore;
 	}
-	
-	public static void main(String[] args) {
-		RaplPackageDomain pkg = new RaplPackageDomain(0);
-		EnergyMesureIt mesureIt = new EnergyMesureIt(pkg);
-		
-		mesureIt.begin();
-		System.out.println("before => "+mesureIt.getEnergyBefore());
-		
-		for(int i=0;i<10000; i++) {}
-		
-		double diff = mesureIt.end();
-		System.out.println("after => "+ mesureIt.getEnergyAfter());
-		System.out.println("diff => "+diff);
-	}
 
 }
