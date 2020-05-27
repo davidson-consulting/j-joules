@@ -11,6 +11,12 @@ import java.util.Map;
  *
  */
 public class EnergyPrinter extends EnergyDisplayHandler {
+	
+	public static final EnergyPrinter ENERGY_PRINTER = new EnergyPrinter();
+	
+	private EnergyPrinter() {
+		super();
+	}
 
 	@Override
 	public void displayIt(Map<String, Double> energyConsumedByDevice) {

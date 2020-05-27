@@ -6,14 +6,97 @@
 	<groupId>jJoules</groupId>
   	<artifactId>J-Joules</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<!-- <packaging>maven-plugin</packaging> -->
 	
 	<properties>
+		<junit-jupiter-version>5.6.2</junit-jupiter-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 	</properties>
 	<dependencies>
+		<!-- this is all you need to write tests with JUnit Jupiter -->
 		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit-jupiter-version}</version>
+			<!-- for writing tests "test" scope would suffice,
+				but extensions are defined in the project's "main" folder, so we need "compile" -->
+			<scope>compile</scope>
+		</dependency>
+		<!-- this dependency is needed to create parameterized tests -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit-jupiter-version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- contains the engine that actually runs the Jupiter-tests -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit-jupiter-version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- to demonstrate side-by-side with JUnit 4,
+				let's use it as well-->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-migrationsupport</artifactId>
+			<version>${junit-jupiter-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<version>${junit-jupiter-version}</version>
+		</dependency>
+
+		<!-- other test libraries work out of the box. e.g. ... -->
+		<dependency>
+			<!-- ... AssertJ ... -->
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.10.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<!-- ... or Mockito ... -->
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.19.1</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- still, some benefit from additional support-->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>2.19.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit-pioneer</groupId>
+			<artifactId>junit-pioneer</artifactId>
+			<version>0.1.2</version>
+			<scope>test</scope>
+		</dependency>
+	
+	
+	
+	
+	
+	
+	
+		<!-- <dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
 			<version>5.5.1</version>
@@ -24,7 +107,14 @@
 			<artifactId>assertj-core</artifactId>
 			<version>3.13.2</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
+		<!-- contains the engine that actually runs the Jupiter-tests -->
+		<!-- <dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.5.1</version>
+			<scope>test</scope>
+		</dependency> -->
 	</dependencies>
 	<build>
 		<plugins>
@@ -64,6 +154,7 @@
 			     </archive>
 			  </configuration>
         	</plugin>
+        	
         	
         	
         	<!--  essaie de docker -->

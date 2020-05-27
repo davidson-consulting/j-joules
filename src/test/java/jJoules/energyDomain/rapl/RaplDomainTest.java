@@ -5,14 +5,10 @@ package jJoules.energyDomain.rapl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 import jJoules.energyDevice.rapl.RaplDevice;
 import jJoules.energyDomain.EnergyDomain;

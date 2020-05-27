@@ -4,7 +4,6 @@
 package jJoules;
 
 import jJoules.energyDomain.EnergyDomain;
-import jJoules.energyDomain.rapl.RaplPackageDomain;
 
 /**
  * @author sanoussy
@@ -21,6 +20,9 @@ public class EnergyMesureIt {
 		this.domain = domain;
 	}
 	
+	public EnergyDomain getEnergyDomain() {
+		return this.domain;
+	}
 	/**
 	 * @return the energy consumed before checking 
 	 */

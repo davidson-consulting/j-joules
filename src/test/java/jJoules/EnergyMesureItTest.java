@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
+import jJoules.EnergyMesureIt;
 import jJoules.energyDomain.rapl.RaplPackageDomain;
 
 /**

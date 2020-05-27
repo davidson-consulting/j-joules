@@ -42,7 +42,12 @@ public abstract class EnergyDomain {
 			return this.toString().equals(other.toString());
 		} return false;
 	}
-
+	
+	/**
+	 * @return domain path name
+	 */
 	public abstract String domainPath();
+	
+	
 
 }

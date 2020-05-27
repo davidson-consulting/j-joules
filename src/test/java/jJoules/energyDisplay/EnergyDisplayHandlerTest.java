@@ -26,7 +26,7 @@ class EnergyDisplayHandlerTest {
 	@BeforeEach
 	public void init() throws NoSuchEnergyDeviceException {
 		EnergyDevice mockDevice = new MockEnergyDevice();
-		this.printer = new EnergyPrinter();
+		this.printer = EnergyPrinter.ENERGY_PRINTER;
 		this.energyConsumedByDevice = printer.getEnergyConsumedByDevice(mockDevice);
 	}
 	
