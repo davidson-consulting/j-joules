@@ -7,6 +7,6 @@ RUN mvn -f /home/j-joules/pom.xml clean package
 
 
 FROM openjdk:11-jre-slim
-COPY --from=build /home/j-joules/target/J-Joules-0.0.1-SNAPSHOT.jar /usr/local/lib/j-joules.jar
+COPY --from=build /home/j-joules/target/J-Joules-1.0-SNAPSHOT.jar /usr/local/lib/j-joules.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/local/lib/j-joules.jar"]

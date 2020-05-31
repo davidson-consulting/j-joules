@@ -5,8 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>jJoules</groupId>
   	<artifactId>J-Joules</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<!-- <packaging>maven-plugin</packaging> -->
+	<version>1.0-SNAPSHOT</version>
 	
 	<properties>
 		<junit-jupiter-version>5.6.2</junit-jupiter-version>
@@ -15,8 +14,19 @@
 		<maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 	</properties>
 	<dependencies>
-		<!-- this is all you need to write tests with JUnit Jupiter -->
-		<dependency>
+	<dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>2.0</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>${junit-jupiter-version}</version>
@@ -41,19 +51,21 @@
 		</dependency>
 
 		<!-- to demonstrate side-by-side with JUnit 4,
-				let's use it as well-->
+				let's use it as well -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-migrationsupport</artifactId>
 			<version>${junit-jupiter-version}</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.junit.vintage</groupId>
 			<artifactId>junit-vintage-engine</artifactId>
@@ -68,14 +80,117 @@
 			<version>3.10.0</version>
 			<scope>test</scope>
 		</dependency>
+        
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-compiler-plugin</artifactId>
+	            <version>2.1</version>
+	            <configuration>
+	                <source>1.8</source>
+	                <target>1.8</target>
+	                <compilerArgument>-proc:none</compilerArgument>
+	            </configuration>
+	        </plugin>
+	        
+	        <plugin>
+				  <groupId>org.apache.maven.plugins</groupId>
+			      <artifactId>maven-jar-plugin</artifactId>
+			      <version>3.0.2</version>
+				  <configuration>
+				     <archive>
+						<manifest>
+							<mainClass>jJoules.Main</mainClass>
+						</manifest>
+				     </archive>
+				  </configuration>
+	       	</plugin>
+        </plugins>
+    </build>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- <dependencies>
 		<dependency>
-			<!-- ... or Mockito ... -->
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit-jupiter-version}</version>
+			for writing tests "test" scope would suffice,
+				but extensions are defined in the project's "main" folder, so we need "compile"
+			<scope>compile</scope>
+		</dependency>
+		this dependency is needed to create parameterized tests
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit-jupiter-version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		contains the engine that actually runs the Jupiter-tests
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit-jupiter-version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		to demonstrate side-by-side with JUnit 4,
+				let's use it as well
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-migrationsupport</artifactId>
+			<version>${junit-jupiter-version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<version>${junit-jupiter-version}</version>
+		</dependency>
+
+		other test libraries work out of the box. e.g. ...
+		<dependency>
+			... AssertJ ...
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.10.0</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			... or Mockito ...
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>2.19.1</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- still, some benefit from additional support-->
+		
+		still, some benefit from additional support
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-junit-jupiter</artifactId>
@@ -89,39 +204,65 @@
 			<version>0.1.2</version>
 			<scope>test</scope>
 		</dependency>
-	
-	
-	
-	
-	
-	
-	
-		<!-- <dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>5.5.1</version>
-			<scope>test</scope>
-		</dependency>
+		
 		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>3.13.2</version>
-			<scope>test</scope>
-		</dependency> -->
-		<!-- contains the engine that actually runs the Jupiter-tests -->
-		<!-- <dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.5.1</version>
-			<scope>test</scope>
-		</dependency> -->
+	      <groupId>org.apache.maven</groupId>
+	      <artifactId>maven-plugin-api</artifactId>
+	      <version>2.0</version>
+    	</dependency>
+
+        dependencies to annotations
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>3.5.2</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.6.2</version>
+        </dependency>
 	</dependencies>
+	
+	
 	<build>
 		<plugins>
+			<plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-compiler-plugin</artifactId>
+	            <version>2.1</version>
+	            <configuration>
+	                <source>1.6</source>
+	                <target>1.6</target>
+	                <compilerArgument>-proc:none</compilerArgument>
+	            </configuration>
+	        </plugin>
+			
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.22.2</version>
 			</plugin>
+			
+            <plugin>
+                <groupId>jJoules</groupId>
+			  	<artifactId>J-Joules</artifactId>
+				<version>1.0-SNAPSHOT</version>
+            </plugin>
+			
 			
 			<plugin>
 				<groupId>org.jacoco</groupId>
@@ -146,65 +287,30 @@
 			  <groupId>org.apache.maven.plugins</groupId>
 		          <artifactId>maven-jar-plugin</artifactId>
 		          <version>3.0.2</version>
-			  <configuration>
-			     <archive>
-				<manifest>
-					<mainClass>jJoules.Main</mainClass>
-				</manifest>
-			     </archive>
-			  </configuration>
+				  <configuration>
+				     <archive>
+						<manifest>
+							<mainClass>jJoules.Main</mainClass>
+						</manifest>
+				     </archive>
+				  </configuration>
         	</plugin>
         	
-        	
-        	
-        	<!--  essaie de docker -->
-           <!--   <plugin>
+        	<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
+		          <artifactId>maven-plugin-plugin</artifactId>
+		          <version>3.5.2</version>
+
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>generated-helpmojo</id>
                         <goals>
-                            <goal>run</goal>
+                            <goal>helpmojo</goal>
                         </goals>
-                        <configuration>
-                            <target>
-                                <copy
-                                    file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
-                                    tofile="${project.build.directory}/J-Joules-0.0.1-SNAPSHOT.jar" />
-                            </target>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <imageTag>${project.version}</imageTag>
-                    <imageTag>latest</imageTag>
-                    <dockerDirectory>src/main/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <directory>${project.build.directory}</directory>
-                            <include>J-Joules-0.0.1-SNAPSHOT.jar</include>
-                            <targetPath>/</targetPath>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>-->
-        	
-        	
+        		
 		</plugins>
-	</build>
+	</build> -->
 </project>
