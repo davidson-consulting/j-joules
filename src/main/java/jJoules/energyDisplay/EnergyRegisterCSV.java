@@ -9,7 +9,7 @@ import java.util.Map;
  * @author sanoussy
  *
  */
-class EnergyRegisterCSV extends EnergyDisplayHandler{
+public class EnergyRegisterCSV extends EnergyDisplayHandler{
 	
 	private String fileName;
 

@@ -4,6 +4,8 @@
 package jJoules.mesureIt;
 
 
+import static org.junit.platform.commons.support.AnnotationSupport.isAnnotated;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,12 +17,10 @@ import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
-import static org.junit.platform.commons.support.AnnotationSupport.isAnnotated;
-
 import jJoules.EnergyMesureIt;
-import jJoules.energyDisplay.EnergyPrinter;
 import jJoules.energyDomain.EnergyDomain;
 import jJoules.energyDomain.rapl.RaplPackageDomain;
+import jJoules.energyDisplay.EnergyRegisterCSV;
 
 /**
  * @author sanoussy
@@ -29,13 +29,24 @@ import jJoules.energyDomain.rapl.RaplPackageDomain;
 public class MesureItExtension implements BeforeAllCallback, BeforeTestExecutionCallback, BeforeEachCallback,
 		AfterTestExecutionCallback, AfterAllCallback {
 	
-	private static final Namespace NAMESPACE = Namespace.create("jJoules","mesureIt","MesureItExtension");
+//	private static final Namespace NAMESPACE = Namespace.create("jJoules","mesureIt","MesureItExtension");
 	private static EnergyDomain DOMAIN =  new RaplPackageDomain(0);
 	private static EnergyMesureIt ENERGY_MESURE_IT = new EnergyMesureIt(DOMAIN);
 	
+	private static EnergyRegisterCSV energyRegisterCSV = new EnergyRegisterCSV("out.csv");
+	
+	private EnergyMesureIt mesureIt;
+	
+	private static Map<String,Double> resEnergyConsumed = new HashMap<String,Double>();
+	
+//	public void init() {
+//		this.mesureIt = new EnergyMesureIt(DOMAIN);
+//		
+//	}
+	
 	@Override
 	public void beforeEach(ExtensionContext context) throws Exception {
-		
+		this.mesureIt = new EnergyMesureIt(DOMAIN);
 
 	}
 
@@ -63,7 +74,10 @@ public class MesureItExtension implements BeforeAllCallback, BeforeTestExecution
 //		res.put(DOMAIN.getDomainName(), end);
 //		EnergyPrinter.ENERGY_PRINTER.displayIt(res);
 		
+		resEnergyConsumed.put(context.getClass().getName(), end);
 		report("Test container",context,end);
+		
+		energyRegisterCSV.displayIt(resEnergyConsumed);
 
 	}
 
@@ -75,6 +89,7 @@ public class MesureItExtension implements BeforeAllCallback, BeforeTestExecution
 //		Map<String,Double> res = new HashMap<String,Double>();
 //		res.put(DOMAIN.getDomainName(), end);
 //		EnergyPrinter.ENERGY_PRINTER.displayIt(res);
+		resEnergyConsumed.put(context.getTestMethod().toString(), end);
 		report("Test",context,end);
 
 	}
@@ -86,7 +101,7 @@ public class MesureItExtension implements BeforeAllCallback, BeforeTestExecution
 	}
 	
 	private static void report(String unit, ExtensionContext context, double energy) {
-		String message = String.format("%s '%s' took %1.2f mj.", unit, context.getDisplayName(), energy);
+		String message = String.format("%s '%s' took %1.2f mj.", unit, context.getTestMethod().toString(), energy);
 		context.publishReportEntry("MesureIt", message);
 	}
 	
