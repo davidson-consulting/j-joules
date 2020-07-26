@@ -25,7 +25,7 @@ public class EnergyRegisterJson extends EnergyDisplayHandler {
 	public static String CURRENT_CLASS_NAME = "";
 	
 	public static List<Data> ALL_DATA = new ArrayList<Data>();
-	private static String fileName = "target/jjoules-reports/report.json";
+	private static String fileName = "target/jjoules-reports";
 	
 	
 	private EnergyRegisterJson() {
@@ -43,30 +43,14 @@ public class EnergyRegisterJson extends EnergyDisplayHandler {
 
 	@Override
 	public void displayIt() {
-		Gson gson = new Gson();
-		File file = new File(this.fileName);
-		if (! file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			FileWriter  fw = new FileWriter(file.getAbsoluteFile());
-			gson.toJson(gson.toJsonTree(ALL_DATA), fw);
-			fw.flush();
-			fw.close();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		saveIt(this.fileName);
 		
 	}
 
 	
-	public static void saveIt() {
+	public static void saveIt(String fileName) {
 		Gson gson = new Gson();
-		File file = new File("test.json");
+		File file = new File(fileName+"/report.json");
 		if (! file.exists()) {
 			try {
 				file.createNewFile();
