@@ -29,4 +29,9 @@ public class RaplSubDomain extends RaplDomain {
 		domain.checkDomainAvailable();
 		return domain;
 	}
+
+	@Override
+	public String getDomainKind() {
+		return getDomainName();
+	}
 }

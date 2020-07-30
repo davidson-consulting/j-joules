@@ -12,11 +12,13 @@ import java.util.Map.Entry;
  * 
  */
 public class EnergySample {
+	public static final String DEVICE = "device";
+	public static final String POWER = "power";
 	public static final String DURATION = "duration";
 
 	private final EnergyDevice device;
-	private final Map<String, Long> maxCounters;
-	private final Map<String, Long> initialCounters;
+	private final Map<EnergyDomain, Long> maxCounters;
+	private final Map<EnergyDomain, Long> initialCounters;
 	private final long initialTimestamp = timestamp();
 
 	public EnergySample(EnergyDevice device) {
@@ -29,7 +31,7 @@ public class EnergySample {
 	 * @return the current timestamp (in milliseconds)
 	 */
 	private final static long timestamp() {
-		return System.currentTimeMillis();
+		return System.nanoTime();
 	}
 
 	/**
@@ -39,17 +41,38 @@ public class EnergySample {
 	 * @param currentTimestamp current timestamp.
 	 * @return the generated report.
 	 */
-	private final Map<String, Long> buildReport(Map<String, Long> currentCounters, long currentTimestamp) {
+	private final Map<String, Long> buildReport(Map<EnergyDomain, Long> currentCounters, long currentTimestamp) {
 		Map<String, Long> report = new HashMap<String, Long>();
-		report.put(DURATION, currentTimestamp - initialTimestamp);
-		for (Entry<String, Long> domains : initialCounters.entrySet()) {
-			long value = currentCounters.get(domains.getKey());
-			if (value >= domains.getValue())
-				value = value - domains.getValue();
+
+		long duration = currentTimestamp - initialTimestamp;
+		report.put(DURATION, duration);
+
+		long device = 0;
+		for (Entry<EnergyDomain, Long> sample : initialCounters.entrySet()) {
+			long value = currentCounters.get(sample.getKey());
+			if (value >= sample.getValue())
+				value = value - sample.getValue();
 			else // Counter reached its max value before reset
-				value = this.maxCounters.get(domains.getKey()) - domains.getValue() + value;
-			report.put(domains.getKey(), value);
+				value = this.maxCounters.get(sample.getKey()) - sample.getValue() + value;
+			report.put(sample.getKey().getDomainName(), value);
+
+			// Computes aggregated values per domain
+			String domain = sample.getKey().getDomainKind();
+			long aggregate = value;
+			if (report.containsKey(domain)) {
+				aggregate += report.get(domain);
+			}
+			report.put(domain, aggregate);
+
+			// Computes the overall consumption of the device
+			device += value;
 		}
+
+		if (device > 0) {
+			report.put(DEVICE, device);
+			report.put(POWER, device*1000/duration);
+		}
+
 		return report;
 	}
 

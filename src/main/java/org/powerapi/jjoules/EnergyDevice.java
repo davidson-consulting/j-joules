@@ -58,12 +58,12 @@ public abstract class EnergyDevice {
 	 * @return the energy consumed by device
 	 * @throws DeviceNotConfiguredException
 	 */
-	protected abstract Map<String, Long> getDomainCounters();
+	protected abstract Map<EnergyDomain, Long> getDomainCounters();
 
 
 	/**
 	 * @return the energy consumed by device
 	 * @throws DeviceNotConfiguredException
 	 */
-	protected abstract Map<String, Long> getMaxDomainCounters();
+	protected abstract Map<EnergyDomain, Long> getMaxDomainCounters();
 }

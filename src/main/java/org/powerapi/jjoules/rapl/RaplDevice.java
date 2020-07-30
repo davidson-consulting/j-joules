@@ -17,6 +17,10 @@ import org.powerapi.jjoules.NoSuchDomainException;
  *
  */
 public class RaplDevice extends EnergyDevice {
+	public static final String ENERGY_UNIT = "uJ"; // Micro-Joules
+	public static final String POWER_UNIT = "W"; // Watts
+	public static final String TIME_UNIT = "ns"; // Nano-Seconds
+
 	protected static final String RAPL_DIR = "/intel-rapl";
 	private static String BASE_RAPL_PATH = "/sys/devices/virtual/powercap" + RAPL_DIR;
 
@@ -71,17 +75,17 @@ public class RaplDevice extends EnergyDevice {
 		return domainPath(socket) + RAPL_DIR + ":" + socket + ":" + subsocket;
 	}
 
-	protected Map<String, Long> getDomainCounters() {
-		Map<String, Long> counters = new HashMap<String, Long>();
+	protected Map<EnergyDomain, Long> getDomainCounters() {
+		Map<EnergyDomain, Long> counters = new HashMap<EnergyDomain, Long>();
 		for (EnergyDomain domain : this.listSelectedDomains())
-			counters.put(domain.getDomainName(), domain.getDomainCounter());
+			counters.put(domain, domain.getDomainCounter());
 		return counters;
 	}
 
-	protected Map<String, Long> getMaxDomainCounters() {
-		Map<String, Long> maxCounters = new HashMap<String, Long>();
+	protected Map<EnergyDomain, Long> getMaxDomainCounters() {
+		Map<EnergyDomain, Long> maxCounters = new HashMap<EnergyDomain, Long>();
 		for (EnergyDomain domain : this.listSelectedDomains())
-			maxCounters.put(domain.getDomainName(), domain.getMaxDomainCounter());
+			maxCounters.put(domain, domain.getMaxDomainCounter());
 		return maxCounters;
 	}
 
