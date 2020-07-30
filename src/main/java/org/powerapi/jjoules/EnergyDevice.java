@@ -3,71 +3,67 @@
  */
 package org.powerapi.jjoules;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
-import org.powerapi.jjoules.domain.EnergyDomain;
-import org.powerapi.jjoules.domain.NoSuchDomainException;
-
-
 /**
- * Class to get energy consumption information for specified device
- * @author sanoussy
+ * Class that abstract any device reporting energy consumption metrics
  *
  */
 public abstract class EnergyDevice {
-	
-	private ArrayList<EnergyDomain> configuredDomains;
-	private ArrayList<EnergyDomain> availableDomains;
+	private final Collection<EnergyDomain> availableDomains;
+	private Collection<EnergyDomain> selectedDomains;
 
 	/**
-	 * @throws NoSuchEnergyDeviceException 
+	 * @throws NoSuchEnergyDeviceException thrown if no domain was found for the
+	 *                                     current device
 	 * 
 	 */
-	public EnergyDevice() throws NoSuchEnergyDeviceException {
-		this.configuredDomains = new ArrayList<EnergyDomain>();
-		this.availableDomains = this.availableDomains();
+	public EnergyDevice() {
+		this.availableDomains = this.listAvailableDomains();
+		this.selectedDomains = this.availableDomains;
 	}
-	
+
 	/**
-	 * Give all domains those could be monitored on the device 
+	 * Selects specific energy domains to be monitored
+	 * 
 	 * @param domains all domains to configure
-	 * @throws NoSuchDomainException 
+	 * @throws NoSuchDomainException
 	 */
-	public void configure(ArrayList<EnergyDomain> domains) throws NoSuchDomainException{
-		for(EnergyDomain domain : domains) {
-			if(! this.availableDomains.contains(domain))
+	public void selectDomain(Collection<EnergyDomain> domains) throws NoSuchDomainException {
+		for (EnergyDomain domain : domains)
+			if (!this.availableDomains.contains(domain))
 				throw new NoSuchDomainException(domain);
-		}
-		this.configuredDomains = domains;
+		this.selectedDomains = domains;
 	}
-	
+
 	/**
-	 * @return configured domain for device
-	 * @throws DeviceNotConfiguredException
+	 * Lists the specific domains to be monitored (by default all the available
+	 * domains)
 	 */
-	public ArrayList<EnergyDomain> getConfiguredDomains() throws DeviceNotConfiguredException{
-		if (this.configuredDomains.isEmpty())
-			throw new DeviceNotConfiguredException("No configured device");
-		return this.configuredDomains;
+	public Collection<EnergyDomain> listSelectedDomains() {
+		return this.selectedDomains;
 	}
-	
-	/**
-	 * @return available Domains
-	 */
-	public ArrayList<EnergyDomain> getAvailableDomains(){
-		return this.availableDomains;
+
+	public EnergySample recordEnergy() {
+		return new EnergySample(this);
 	}
-	
+
 	/**
 	 * @return all available domain that could be monitored on the device
 	 */
-	public abstract ArrayList<EnergyDomain> availableDomains() throws NoSuchEnergyDeviceException;
+	public abstract Collection<EnergyDomain> listAvailableDomains();
 	
 	/**
 	 * @return the energy consumed by device
-	 * @throws DeviceNotConfiguredException 
+	 * @throws DeviceNotConfiguredException
 	 */
-	public abstract Map<String,Double> getEnergyConsumed() throws DeviceNotConfiguredException;
+	protected abstract Map<String, Long> getDomainCounters();
 
+
+	/**
+	 * @return the energy consumed by device
+	 * @throws DeviceNotConfiguredException
+	 */
+	protected abstract Map<String, Long> getMaxDomainCounters();
 }

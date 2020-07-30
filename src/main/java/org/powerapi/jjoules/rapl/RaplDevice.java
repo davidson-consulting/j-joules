@@ -3,154 +3,93 @@
  */
 package org.powerapi.jjoules.rapl;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.powerapi.jjoules.DeviceNotConfiguredException;
 import org.powerapi.jjoules.EnergyDevice;
-import org.powerapi.jjoules.NoSuchEnergyDeviceException;
-import org.powerapi.jjoules.domain.EnergyDomain;
-import org.powerapi.jjoules.rapl.domain.RaplCoreDomain;
-import org.powerapi.jjoules.rapl.domain.RaplDomain;
-import org.powerapi.jjoules.rapl.domain.RaplDramDomain;
-import org.powerapi.jjoules.rapl.domain.RaplPackageDomain;
-import org.powerapi.jjoules.rapl.domain.RaplUncoreDomain;
+import org.powerapi.jjoules.EnergyDomain;
+import org.powerapi.jjoules.NoSuchDomainException;
 
 /**
- * @author sanoussy
+ * Implementation of the Intel RAPL energy device with the associated domains.
  *
  */
 public class RaplDevice extends EnergyDevice {
+	protected static final String RAPL_DIR = "/intel-rapl";
+	private static String BASE_RAPL_PATH = "/sys/devices/virtual/powercap" + RAPL_DIR;
+
+	public static final RaplDevice RAPL = new RaplDevice();
+	private final RaplDomain rootDomain;
 
 	/**
 	 * @throws NoSuchEnergyDeviceException
 	 * 
 	 */
-	public RaplDevice() throws NoSuchEnergyDeviceException {
-		super();
+	private RaplDevice() {
+		this.rootDomain =  new RaplDomain(BASE_RAPL_PATH);
 	}
 
 	@Override
-	public ArrayList<EnergyDomain> availableDomains() throws NoSuchEnergyDeviceException {
-		RaplDomain.check();
-		ArrayList<EnergyDomain> availDomains = new ArrayList<EnergyDomain>();
-
-		availDomains.addAll(availablePKGDomains());
-		availDomains.addAll(availableCoreDomains());
-		availDomains.addAll(availableUncoreDomains());
-		availDomains.addAll(availableDramDomains());
-		return availDomains;
-	}
-
-	/**
-	 * @return all available package on the device
-	 */
-	public static ArrayList<EnergyDomain> availablePKGDomains() {
-		ArrayList<EnergyDomain> pkgDomains = new ArrayList<EnergyDomain>();
-		int ids = getSocketIds();
-		for (int id = 0; id < ids; id++) {
-			String domainNameFilePath = RaplDomain.domainPath(id) + "/name";
-			if (new File(domainNameFilePath).exists()) {
-				String domainName = RaplDomain.openAndReadFile(domainNameFilePath);
-				if (domainName.equals("package-" + id))
-					pkgDomains.add(new RaplPackageDomain(id));
-			}
-		}
-		return pkgDomains;
-	}
-
-	/**
-	 * @return an integer which is assumed to be the number of package on the device
-	 */
-	private static int getSocketIds() {
-		int socketId = 0;
+	public Collection<EnergyDomain> listAvailableDomains() {
+		ArrayList<EnergyDomain> availableDomains = new ArrayList<EnergyDomain>();
+		short socket = 0;
 		while (true) {
-			String pathName = RaplDomain.domainPath(socketId);
-			if (new File(pathName).exists())
-				socketId += 1;
-			else
-				return socketId;
-		}
-	}
-
-	/**
-	 * @return list of all available core domains on the device
-	 */
-	public static ArrayList<EnergyDomain> availableCoreDomains() {
-		ArrayList<EnergyDomain> coreDomains = new ArrayList<EnergyDomain>();
-		Map<Integer, Integer> subDomains = getDomainsIds(RaplCoreDomain.CORE);
-		for (Integer i : subDomains.keySet()) {
-			coreDomains.add(new RaplCoreDomain(subDomains.get(i), i));
-		}
-		return coreDomains;
-	}
-
-	/**
-	 * @return list of all available uncore domains on the device
-	 */
-	public static ArrayList<EnergyDomain> availableUncoreDomains() {
-		ArrayList<EnergyDomain> uncoreDomains = new ArrayList<EnergyDomain>();
-		Map<Integer, Integer> subDomains = getDomainsIds(RaplUncoreDomain.UNCORE);
-		for (Integer i : subDomains.keySet()) {
-			uncoreDomains.add(new RaplUncoreDomain(subDomains.get(i), i));
-		}
-		return uncoreDomains;
-	}
-
-	/**
-	 * @return list of all available dram domains on the device
-	 */
-	private static ArrayList<EnergyDomain> availableDramDomains() {
-		ArrayList<EnergyDomain> dramDomains = new ArrayList<EnergyDomain>();
-		Map<Integer, Integer> subDomains = getDomainsIds(RaplDramDomain.DRAM);
-		for (Integer i : subDomains.keySet()) {
-			dramDomains.add(new RaplDramDomain(subDomains.get(i), i));
-		}
-		return dramDomains;
-	}
-
-	/**
-	 * @param domainName  the domain name to check existence
-	 * @param subDomainId the subDomain id {core, uncore or dram}
-	 * @return list of integer those represent a socket of device
-	 */
-	private static Map<Integer, Integer> getDomainsIds(String domainName) {
-		Map<Integer, Integer> domainsIds = new HashMap<Integer, Integer>();
-		int ids = getSocketIds();
-		for (int id = 0; id < ids; id++) {
-			String domainFilePath = RaplDomain.domainPath(id);
-			if (new File(domainFilePath).exists()) {
-				boolean isSubDomain = false;
-				int subId = 0;
-				while (!isSubDomain) {
-					String subDomainFilePath = domainFilePath + "/intel-rapl:" + id + ":" + subId + "/name";
-					if (new File(subDomainFilePath).exists()) {
-						String name = RaplDomain.openAndReadFile(subDomainFilePath);
-						if (name.equals(domainName)) {
-							domainsIds.put(id, subId);
-							isSubDomain = true;
-						} else {
-							subId++;
-						}
-
-					} else {
-						isSubDomain = true;
-					}
-				}
+			try {
+				RaplDomain domain = RaplDomain.createDomain(domainPath(socket));
+				availableDomains.add(domain);
+				availableDomains.addAll(listAvailableSubDomain(socket, domain));
+				socket++;
+			} catch (NoSuchDomainException e) {
+				break;
 			}
 		}
-		return domainsIds;
+		return availableDomains;
 	}
 
-	@Override
-	public Map<String, Double> getEnergyConsumed() throws DeviceNotConfiguredException {
-		Map<String, Double> energyConsumed = new HashMap<String, Double>();
-		for (EnergyDomain domain : this.getConfiguredDomains()) {
-			energyConsumed.put(domain.getDomainName(), domain.getDomainEnergy());
+	private static final String domainPath(int socket) {
+		return BASE_RAPL_PATH + RAPL_DIR + ":" + socket;
+	}
+
+	private Collection<EnergyDomain> listAvailableSubDomain(short socket, RaplDomain domain) {
+		ArrayList<EnergyDomain> availableDomains = new ArrayList<EnergyDomain>();
+		short subsocket = 0;
+		while (true) {
+			try {
+				RaplDomain subDomain = domain.createSubDomain(subDomainPath(socket, subsocket));
+				availableDomains.add(subDomain);
+				subsocket++;
+			} catch (NoSuchDomainException e) {
+				break;
+			}
 		}
-		return energyConsumed;
+		return availableDomains;
 	}
 
+	private static final String subDomainPath(int socket, int subsocket) {
+		return domainPath(socket) + RAPL_DIR + ":" + socket + ":" + subsocket;
+	}
+
+	protected Map<String, Long> getDomainCounters() {
+		Map<String, Long> counters = new HashMap<String, Long>();
+		for (EnergyDomain domain : this.listSelectedDomains())
+			counters.put(domain.getDomainName(), domain.getDomainCounter());
+		return counters;
+	}
+
+	protected Map<String, Long> getMaxDomainCounters() {
+		Map<String, Long> maxCounters = new HashMap<String, Long>();
+		for (EnergyDomain domain : this.listSelectedDomains())
+			maxCounters.put(domain.getDomainName(), domain.getMaxDomainCounter());
+		return maxCounters;
+	}
+
+	public boolean isDeviceAvailable() {
+		return this.rootDomain.isDomainAvailable();
+	}
+
+	public boolean isDeviceEnabled() {
+		return this.rootDomain.isDomainEnabled();
+	}
 }
