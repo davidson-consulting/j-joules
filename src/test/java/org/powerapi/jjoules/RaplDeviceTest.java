@@ -3,39 +3,38 @@
  */
 package org.powerapi.jjoules;
 
+import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Collection;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.powerapi.jjoules.DeviceNotConfiguredException;
-import org.powerapi.jjoules.NoSuchEnergyDeviceException;
-import org.powerapi.jjoules.domain.NoSuchDomainException;
 import org.powerapi.jjoules.rapl.RaplDevice;
 
 /**
- * @author sanoussy
+ * Basic tests for running J-Joules
  *
  */
 class RaplDeviceTest {
 
-	private RaplDevice raplDevice;
-		
-	@BeforeEach
-	public void initDevice() throws NoSuchEnergyDeviceException {
-		this.raplDevice = new RaplDevice();
-	}
-	
-	@Test
-	public void getConsumedEnergy() throws DeviceNotConfiguredException, NoSuchDomainException {
-		raplDevice.configure(raplDevice.getAvailableDomains());
-		
-		Collection<Double> consumedEnergy = raplDevice.getEnergyConsumed().values();
+	private RaplDevice device;
 
-		for(Double d : consumedEnergy) {
-			assertThat(d).isGreaterThanOrEqualTo(0);
-		}
+	@BeforeEach
+	public void initDevice() {
+		this.device = RaplDevice.RAPL;
+		Assumptions.assumeTrue(this.device.isDeviceAvailable(), "Intel RAPL is not available on this computer");
+		Assumptions.assumeTrue(this.device.isDeviceEnabled(), "Intel RAPL is not enabled on this computer");
+	}
+
+	@Test
+	public void listOfAvailableDomainsShouldBeAboveZero() throws NoSuchDomainException {
+		Assertions.assertTrue(this.device.listAvailableDomains().size() > 0);
+	}
+
+	@Test
+	public void reportEnergyShoudBeAboveZero() throws NoSuchDomainException {
+		Map<String, Long> report = this.device.recordEnergy().stop();
+		for (long value : report.values())
+			Assertions.assertTrue(value > 0);
 	}
 }
