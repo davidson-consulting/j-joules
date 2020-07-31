@@ -70,7 +70,7 @@ public class EnergySample {
 
 		if (device > 0) {
 			report.put(DEVICE, device);
-			report.put(POWER, device*1000000/duration);
+			report.put(POWER, device*1000/duration);
 		}
 
 		return report;
