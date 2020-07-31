@@ -4,7 +4,9 @@
 package org.powerapi.jjoules;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Class that abstract any device reporting energy consumption metrics
@@ -66,4 +68,15 @@ public abstract class EnergyDevice {
 	 * @throws DeviceNotConfiguredException
 	 */
 	protected abstract Map<EnergyDomain, Long> getMaxDomainCounters();
+
+	public static final Map<String,Long> diff(final Map<String,Long> before, final Map<String,Long> after) {
+		Set<String> keys = before.keySet();
+		keys.retainAll(after.keySet());
+		Map<String,Long> diff = new HashMap<String,Long>();
+		for(String key:keys) {
+			long value = Math.abs(after.get(key)-before.get(key));
+			diff.put(key,value);
+		}
+		return diff;
+	}
 }

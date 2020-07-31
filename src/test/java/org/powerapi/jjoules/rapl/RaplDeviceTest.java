@@ -1,5 +1,6 @@
 package org.powerapi.jjoules.rapl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
@@ -31,5 +32,23 @@ class RaplDeviceTest {
 		Map<String, Long> report = this.device.recordEnergy().stop();
 		for (long value : report.values())
 			Assertions.assertTrue(value >= 0);
+	}
+
+	@Test
+	public void diffWithEmptyshouldBeEmpty() {
+		Map<String, Long> report = this.device.recordEnergy().stop();
+		Map<String, Long> empty = new HashMap<String,Long>();
+		Map<String, Long> diff = this.device.diff(report,empty);
+		Assertions.assertTrue(diff.size() == 0);
+	}
+
+	@Test
+	public void diffWithItSelfShouldReturnZeros() {
+		Map<String, Long> report = this.device.recordEnergy().stop();
+		Map<String, Long> diff = this.device.diff(report,report);
+		Assertions.assertTrue(diff.size() == report.size());
+		for (long value : diff.values()){
+			Assertions.assertTrue(value == 0);
+		}
 	}
 }
