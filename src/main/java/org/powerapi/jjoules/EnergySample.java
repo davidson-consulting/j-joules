@@ -12,9 +12,11 @@ import java.util.Map.Entry;
  * 
  */
 public class EnergySample {
+	public static final String ENERGY_UNIT = "uJ"; // Micro-Joules
+	public static final String POWER_UNIT = "mW"; // Milli-Watts
+	public static final String TIME_UNIT = "ns"; // Nano-Seconds
 	public static final String DEVICE = "device";
-	public static final String POWER = "power";
-	public static final String DURATION = "duration";
+	public static final String DURATION = "duration|"+TIME_UNIT;
 
 	private final EnergyDevice device;
 	private final Map<EnergyDomain, Long> maxCounters;
@@ -49,32 +51,50 @@ public class EnergySample {
 
 		long device = 0;
 		for (Entry<EnergyDomain, Long> initial : initialCounters.entrySet()) {
-			long value = currentCounters.get(initial.getKey());
+			EnergyDomain domain = initial.getKey();
+			long value = currentCounters.get(domain);
 			if (value >= initial.getValue())
 				value = value - initial.getValue();
 			else // Counter reached its max value before reset
-				value = this.maxCounters.get(initial.getKey()) - initial.getValue() + value;
-			report.put(initial.getKey().toString(), value);
+				value = this.maxCounters.get(domain) - initial.getValue() + value;
+			String name = domain.toString();
+			report.put(energy(name), value);
+			report.put(power(name), convertToPower(duration,value));
 
 			// Computes aggregated values per domain
-			String domain = initial.getKey().getDomainKind();
+			String kind = domain.getDomainKind();
 			long aggregate = value;
-			if (report.containsKey(domain)) {
-				aggregate += report.get(domain);
+			if (report.containsKey(kind)) {
+				aggregate += report.get(kind);
 			}
-			report.put(domain, aggregate);
+			report.put(energy(kind), aggregate);
+			report.put(power(kind), convertToPower(duration,aggregate));
 
 			// Computes the overall consumption of the device
-			device += value;
+			if (kind.equals("package")||kind.equals("dram"))
+				device += value;
 		}
 
 		if (device > 0) {
-			report.put(DEVICE, device);
-			report.put(POWER, device*1000000/duration);
+			report.put(energy(DEVICE), device);
+			report.put(power(DEVICE), convertToPower(duration,device));
 		}
 
 		return report;
 	}
+
+	private static final String energy(final String text) {
+		return text + "|" + ENERGY_UNIT;
+	}
+
+	private static final String power(final String text) {
+		return text + "|" + POWER_UNIT;
+	}
+
+	private static final long convertToPower(final long duration, final long energy) {
+		return energy * 1000000 / duration;
+	}
+
 
 	private boolean stopped = false;
 

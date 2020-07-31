@@ -17,10 +17,6 @@ import org.powerapi.jjoules.NoSuchDomainException;
  *
  */
 public class RaplDevice extends EnergyDevice {
-	public static final String ENERGY_UNIT = "uJ"; // Micro-Joules
-	public static final String POWER_UNIT = "mW"; // Milli-Watts
-	public static final String TIME_UNIT = "ns"; // Nano-Seconds
-
 	protected static final String RAPL_DIR = "/intel-rapl";
 	private static String BASE_RAPL_PATH = "/sys/devices/virtual/powercap" + RAPL_DIR;
 
