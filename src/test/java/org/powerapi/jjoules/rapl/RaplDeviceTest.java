@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.powerapi.jjoules;
+package org.powerapi.jjoules.rapl;
 
 import java.util.Map;
 
@@ -9,14 +6,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.powerapi.jjoules.rapl.RaplDevice;
 
 /**
  * Basic tests for running J-Joules
  *
  */
 class RaplDeviceTest {
-
 	private RaplDevice device;
 
 	@BeforeEach
@@ -27,14 +22,14 @@ class RaplDeviceTest {
 	}
 
 	@Test
-	public void listOfAvailableDomainsShouldBeAboveZero() throws NoSuchDomainException {
+	public void listOfAvailableDomainsShouldBeAboveZero() {
 		Assertions.assertTrue(this.device.listAvailableDomains().size() > 0);
 	}
 
 	@Test
-	public void reportEnergyShoudBeAboveZero() throws NoSuchDomainException {
+	public void reportEnergyShoudBeAboveOrEqualsToZero() {
 		Map<String, Long> report = this.device.recordEnergy().stop();
 		for (long value : report.values())
-			Assertions.assertTrue(value > 0);
+			Assertions.assertTrue(value >= 0);
 	}
 }

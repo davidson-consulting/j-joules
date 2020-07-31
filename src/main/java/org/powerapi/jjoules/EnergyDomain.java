@@ -23,19 +23,7 @@ public abstract class EnergyDomain {
 	 */
 	public abstract String getDomainName();
 
+	public abstract String getDomainKind();
+
 	public abstract boolean isDomainAvailable();
-
-	/**
-	 * @return true if other object is equals to the domain and false otherwise
-	 */
-	public boolean equals(Object other) {
-		if (other == null)
-			return false;
-		if (other instanceof EnergyDomain) {
-			EnergyDomain domain = (EnergyDomain) other;
-			return getDomainName().equals(domain.getDomainName());
-		}
-		return false;
-	}
-
 }

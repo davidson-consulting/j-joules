@@ -97,4 +97,9 @@ public class RaplDomain extends EnergyDomain {
 	public int hashCode() {
 		return this.path.hashCode();
 	}
+
+	@Override
+	public String getDomainKind() {
+		return getDomainName().split("-")[0];
+	}
 }
