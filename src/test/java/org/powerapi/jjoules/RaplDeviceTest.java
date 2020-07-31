@@ -32,9 +32,9 @@ class RaplDeviceTest {
 	}
 
 	@Test
-	public void reportEnergyShoudBeGreateOrEqualsToZero() throws NoSuchDomainException {
+	public void reportEnergyShoudBeAboveZero() throws NoSuchDomainException {
 		Map<String, Long> report = this.device.recordEnergy().stop();
 		for (long value : report.values())
-			Assertions.assertTrue(value >= 0);
+			Assertions.assertTrue(value > 0);
 	}
 }
