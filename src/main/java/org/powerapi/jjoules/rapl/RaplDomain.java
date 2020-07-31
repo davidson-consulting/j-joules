@@ -100,6 +100,6 @@ public class RaplDomain extends EnergyDomain {
 
 	@Override
 	public String getDomainKind() {
-		return getDomainName().split(":")[0];
+		return getDomainName().split("-")[0];
 	}
 }

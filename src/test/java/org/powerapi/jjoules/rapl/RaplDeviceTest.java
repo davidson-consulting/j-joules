@@ -27,9 +27,9 @@ class RaplDeviceTest {
 	}
 
 	@Test
-	public void reportEnergyShoudBeAboveZero() {
+	public void reportEnergyShoudBeAboveOrEqualsToZero() {
 		Map<String, Long> report = this.device.recordEnergy().stop();
 		for (long value : report.values())
-			Assertions.assertTrue(value > 0);
+			Assertions.assertTrue(value >= 0);
 	}
 }

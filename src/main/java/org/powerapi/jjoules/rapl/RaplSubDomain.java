@@ -20,8 +20,8 @@ public class RaplSubDomain extends RaplDomain {
 	}
 
 	@Override
-	public String toString() {
-		return parent.toString() + ":" + getDomainName();
+	public String getDomainName() {
+		return parent.toString() + "/" + getDomainName();
 	}
 
 	public static RaplDomain createSubDomain(RaplDomain raplDomain, String path) {

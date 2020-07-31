@@ -48,16 +48,16 @@ public class EnergySample {
 		report.put(DURATION, duration);
 
 		long device = 0;
-		for (Entry<EnergyDomain, Long> sample : initialCounters.entrySet()) {
-			long value = currentCounters.get(sample.getKey());
-			if (value >= sample.getValue())
-				value = value - sample.getValue();
+		for (Entry<EnergyDomain, Long> initial : initialCounters.entrySet()) {
+			long value = currentCounters.get(initial.getKey());
+			if (value >= initial.getValue())
+				value = value - initial.getValue();
 			else // Counter reached its max value before reset
-				value = this.maxCounters.get(sample.getKey()) - sample.getValue() + value;
-			report.put(sample.getKey().getDomainName(), value);
+				value = this.maxCounters.get(initial.getKey()) - initial.getValue() + value;
+			report.put(initial.getKey().getDomainName(), value);
 
 			// Computes aggregated values per domain
-			String domain = sample.getKey().getDomainKind();
+			String domain = initial.getKey().getDomainKind();
 			long aggregate = value;
 			if (report.containsKey(domain)) {
 				aggregate += report.get(domain);
@@ -70,7 +70,7 @@ public class EnergySample {
 
 		if (device > 0) {
 			report.put(DEVICE, device);
-			report.put(POWER, device*1000/duration);
+			report.put(POWER, device*1000000/duration);
 		}
 
 		return report;
