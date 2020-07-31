@@ -54,7 +54,7 @@ public class EnergySample {
 				value = value - initial.getValue();
 			else // Counter reached its max value before reset
 				value = this.maxCounters.get(initial.getKey()) - initial.getValue() + value;
-			report.put(initial.getKey().getDomainName(), value);
+			report.put(initial.getKey().toString(), value);
 
 			// Computes aggregated values per domain
 			String domain = initial.getKey().getDomainKind();
@@ -70,7 +70,7 @@ public class EnergySample {
 
 		if (device > 0) {
 			report.put(DEVICE, device);
-			report.put(POWER, device*1000/duration);
+			report.put(POWER, device*1000000/duration);
 		}
 
 		return report;
