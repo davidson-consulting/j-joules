@@ -64,8 +64,8 @@ public class EnergySample {
 			// Computes aggregated values per domain
 			String kind = domain.getDomainKind();
 			long aggregate = value;
-			if (report.containsKey(kind)) {
-				aggregate += report.get(kind);
+			if (report.containsKey(energy(kind))) {
+				aggregate += report.get(energy(kind));
 			}
 			report.put(energy(kind), aggregate);
 			report.put(power(kind), convertToPower(duration,aggregate));
