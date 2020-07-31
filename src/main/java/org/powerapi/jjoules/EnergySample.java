@@ -12,8 +12,11 @@ import java.util.Map.Entry;
  * 
  */
 public class EnergySample {
+	public static final String ENERGY_UNIT = "uJ"; // Micro-Joules
+	public static final String POWER_UNIT = "mW"; // Milli-Watts
+	public static final String TIME_UNIT = "ns"; // Nano-Seconds
 	public static final String DEVICE = "device";
-	public static final String DURATION = "duration|"+RaplDevice.TIME_UNIT;
+	public static final String DURATION = "duration|"+TIME_UNIT;
 
 	private final EnergyDevice device;
 	private final Map<EnergyDomain, Long> maxCounters;
@@ -48,15 +51,15 @@ public class EnergySample {
 
 		long device = 0;
 		for (Entry<EnergyDomain, Long> initial : initialCounters.entrySet()) {
-			String domain = initial.getKey();
+			EnergyDomain domain = initial.getKey();
 			long value = currentCounters.get(domain);
 			if (value >= initial.getValue())
 				value = value - initial.getValue();
 			else // Counter reached its max value before reset
 				value = this.maxCounters.get(domain) - initial.getValue() + value;
-			String name = domain.getDomainName();
+			String name = domain.toString();
 			report.put(energy(name), value);
-			report.put(power(name), convertToWatts(duration,value));
+			report.put(power(name), convertToPower(duration,value));
 
 			// Computes aggregated values per domain
 			String kind = domain.getDomainKind();
@@ -81,11 +84,11 @@ public class EnergySample {
 	}
 
 	private static final String energy(final String text) {
-		return text + "|" + RaplDevice.ENERGY_UNIT;
+		return text + "|" + ENERGY_UNIT;
 	}
 
 	private static final String power(final String text) {
-		return text + "|" + RaplDevice.POWER_UNIT;
+		return text + "|" + POWER_UNIT;
 	}
 
 	private static final long convertToPower(final long duration, final long energy) {
