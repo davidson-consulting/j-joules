@@ -3,6 +3,8 @@
  */
 package org.powerapi.jjoules;
 
+import org.powerapi.jjoules.jni.Perf;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,10 +25,16 @@ public class EnergySample {
 	private final Map<EnergyDomain, Long> initialCounters;
 	private final long initialTimestamp = timestamp();
 
+	public static Perf perf;
+
 	public EnergySample(EnergyDevice device) {
 		this.device = device;
 		this.maxCounters = device.getMaxDomainCounters();
 		this.initialCounters = device.getDomainCounters();
+		if (perf == null) {
+			perf = new Perf();
+			perf.start();
+		}
 	}
 
 	/**
@@ -80,6 +88,8 @@ public class EnergySample {
 			report.put(power(DEVICE), convertToPower(duration,device));
 		}
 
+		report.put("instructions", perf.read());
+
 		return report;
 	}
 
@@ -109,6 +119,8 @@ public class EnergySample {
 		if (stopped)
 			return report;
 		this.report = buildReport(device.getDomainCounters(), timestamp());
+		perf.stop();
+		perf = null;
 		return report;
 	}
 
