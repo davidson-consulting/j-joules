@@ -18,19 +18,19 @@ JNIEXPORT void JNICALL Java_org_powerapi_jjoules_jni_Perf_start
 /*
  * Class:     org_powerapi_jjoules_jni_Perf
  * Method:    stop
- * Signature: ()J
+ * Signature: ()[J
  */
-JNIEXPORT jlong JNICALL Java_org_powerapi_jjoules_jni_Perf_stop
+JNIEXPORT jlongArray JNICALL Java_org_powerapi_jjoules_jni_Perf_stop
   (JNIEnv *, jobject);
-
 
 /*
  * Class:     org_powerapi_jjoules_jni_Perf
  * Method:    read
- * Signature: ()J
+ * Signature: ()[J
  */
-JNIEXPORT jlong JNICALL Java_org_powerapi_jjoules_jni_Perf_read
+JNIEXPORT jlongArray JNICALL Java_org_powerapi_jjoules_jni_Perf_read
   (JNIEnv *, jobject);
+
 #ifdef __cplusplus
 }
 #endif

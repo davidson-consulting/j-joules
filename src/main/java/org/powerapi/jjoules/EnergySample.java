@@ -5,6 +5,7 @@ package org.powerapi.jjoules;
 
 import org.powerapi.jjoules.jni.Perf;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,11 +15,22 @@ import java.util.Map.Entry;
  * 
  */
 public class EnergySample {
+
 	public static final String ENERGY_UNIT = "uJ"; // Micro-Joules
 	public static final String POWER_UNIT = "mW"; // Milli-Watts
 	public static final String TIME_UNIT = "ns"; // Nano-Seconds
 	public static final String DEVICE = "device";
 	public static final String DURATION = "duration|"+TIME_UNIT;
+
+	public static final byte NB_PERF_INDICATORS = 6;
+	public static final String LABEL_COUNTERS[] = {
+			"instructions",
+			"cycles",
+			"cache-reference",
+			"cache-misses",
+			"branches",
+			"branch-misses",
+	};
 
 	private final EnergyDevice device;
 	private final Map<EnergyDomain, Long> maxCounters;
@@ -88,8 +100,10 @@ public class EnergySample {
 			report.put(power(DEVICE), convertToPower(duration,device));
 		}
 
-		report.put("instructions", perf.read());
-
+		final long[] read = perf.read();
+		for (byte i = 0; i < NB_PERF_INDICATORS; i++) {
+			report.put(LABEL_COUNTERS[i], read[i]);
+		}
 		return report;
 	}
 

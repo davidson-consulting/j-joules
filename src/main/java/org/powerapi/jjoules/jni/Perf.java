@@ -9,9 +9,9 @@ public class Perf {
 
     public native void start();
 
-    public native long stop();
+    public native long[] stop();
 
-    public native long read();
+    public native long[] read();
 
     static {
         System.loadLibrary("perf");
